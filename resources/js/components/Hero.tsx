@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Star, Coffee, Cake, Award, Play, ArrowRight } from 'lucide-react';
+import heroImage from '@/assets/hero-cafe.png';
 import { Button } from '@/components/ui/button';
-import heroImage from '@/assets/hero-cafe.jpg';
+import { ArrowRight, Award, Cake, Coffee, Play, Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const Hero = () => {
     const [scrollY, setScrollY] = useState(0);
@@ -27,7 +27,7 @@ const Hero = () => {
             >
                 <img
                     src={heroImage}
-                    alt="Luxusní interiér kavárny Café Luxe"
+                    alt="Luxusní interiér kavárny U Marušky"
                     className="w-full h-[120vh] object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-hero" />

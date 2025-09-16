@@ -54,7 +54,7 @@ const ONas = () => {
             name: 'Marie Novakova',
             role: 'Hlavní Barista & Zakladatelka',
             image: '/placeholder.svg',
-            description: 'S 15 lety zkušeností v kávové branži přináší Café Luxe jedinečnou vizi luxusní kavárny.'
+            description: 'S 15 lety zkušeností v kávové branži přináší U Marušky jedinečnou vizi luxusní kavárny.'
         },
         {
             name: 'Jan Svoboda',
@@ -102,7 +102,7 @@ const ONas = () => {
                             </h2>
                             <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
                                 <p>
-                                    Café Luxe vzniklo z vize vytvořit prostor, kde se setkává luxus s autenticitou.
+                                    U Marušky vzniklo z vize vytvořit prostor, kde se setkává luxus s autenticitou.
                                     Naše cesta začala v roce 2018, kdy jsme si uvědomili, že Praha potřebuje místo,
                                     které kombinuje nejlepší tradice evropské kavárny s moderním pojetím služeb.
                                 </p>
@@ -123,7 +123,7 @@ const ONas = () => {
                                 <div className="aspect-[4/5] bg-muted rounded-2xl overflow-hidden shadow-elegant">
                                     <img
                                         src="/placeholder.svg"
-                                        alt="Interiér Café Luxe"
+                                        alt="Interiér U Marušky"
                                         className="w-full h-full object-cover"
                                     />
                                 </div>
@@ -183,7 +183,7 @@ const ONas = () => {
                             Náš <span className="text-primary">tým</span>
                         </h2>
                         <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-                            Poznávejte lidi, kteří každý den vytvářejí kouzlo Café Luxe
+                            Poznávejte lidi, kteří každý den vytvářejí kouzlo U Marušky
                         </p>
                     </div>
 
@@ -257,7 +257,7 @@ const ONas = () => {
                             Připojte se k naší <span className="text-primary">komunitě</span>
                         </h2>
                         <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-                            Zažijte atmosféru Café Luxe a staňte se součástí našeho příběhu
+                            Zažijte atmosféru U Marušky a staňte se součástí našeho příběhu
                         </p>
                         <Button size="lg" className="bg-gradient-primary hover:shadow-luxury text-lg px-8 py-4 h-auto font-semibold">
                             Navštivte nás

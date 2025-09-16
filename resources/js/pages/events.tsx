@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { Calendar, MapPin, Clock, Users, Star, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import Navigation from '@/components/Navigation';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Calendar, Clock, Filter, MapPin, Star, Users } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 
 interface Event {
@@ -32,7 +32,7 @@ const Akce = () => {
             description: 'Naučte se připravit profesionální kávu s našimi experty. Zahrnuje teorii i praktické cvičení.',
             date: '2024-02-15',
             time: '14:00',
-            location: 'Café Luxe - hlavní sál',
+            location: 'U Marušky - hlavní sál',
             capacity: 12,
             registered: 8,
             price: 1200,
@@ -46,7 +46,7 @@ const Akce = () => {
             description: 'Ochutnejte výběr nejlepších čajů z celého světa v doprovodu odborného výkladu.',
             date: '2024-02-20',
             time: '16:30',
-            location: 'Café Luxe - salónek',
+            location: 'U Marušky - salónek',
             capacity: 16,
             registered: 12,
             price: 800,
@@ -60,7 +60,7 @@ const Akce = () => {
             description: 'Užijte si večer plný skvělé hudby v podání místních umělců při skleničce vína.',
             date: '2024-02-25',
             time: '19:00',
-            location: 'Café Luxe - celý prostor',
+            location: 'U Marušky - celý prostor',
             capacity: 50,
             registered: 35,
             price: 0,
@@ -74,7 +74,7 @@ const Akce = () => {
             description: 'Vytvořte si vlastní luxusní dezert pod vedením našeho šéfcukráře.',
             date: '2024-03-05',
             time: '10:00',
-            location: 'Café Luxe - kuchyně',
+            location: 'U Marušky - kuchyně',
             capacity: 8,
             registered: 3,
             price: 1500,
