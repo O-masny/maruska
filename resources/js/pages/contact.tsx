@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 
-import { MapPin, Phone, Mail, Clock, Car, Train, Bus, Wifi, CreditCard, Baby } from 'lucide-react';
+import Footer from '@/components/Footer';
+import Navigation from '@/components/Navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import Navigation from '@/components/Navigation';
 import { Textarea } from '@headlessui/react';
-import Footer from '@/components/Footer';
+import { Baby, Bus, Car, Clock, CreditCard, Mail, MapPin, Phone, Train, Wifi } from 'lucide-react';
 
 const Kontakt = () => {
     useEffect(() => {
@@ -174,7 +174,18 @@ const Kontakt = () => {
                                     <Button className="w-full bg-gradient-primary hover:shadow-luxury font-semibold h-12">
                                         Odeslat zprávu
                                     </Button>
+
+                                    {/* Privacy notice */}
+                                    <p className="text-xs text-muted-foreground text-center">
+                                        Odesláním zprávy potvrzujete, že vaše údaje (jméno, e-mail, text zprávy)
+                                        budou použity pouze k vyřízení vaší žádosti.
+                                        Více informací najdete v&nbsp;
+                                        <a href="/privacy" className="underline hover:text-primary">
+                                            zásadách ochrany osobních údajů
+                                        </a>.
+                                    </p>
                                 </form>
+
                             </div>
                         </div>
                     </div>
