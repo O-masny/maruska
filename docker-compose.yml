@@ -1,7 +1,7 @@
 services:
   nginx:
     image: nginx:1.25-alpine
-    container_name: ama_nginx
+    container_name: maruska_nginx
     depends_on:
       - app
     volumes:
@@ -13,28 +13,28 @@ services:
       - "traefik.enable=true"
 
       # HTTPS router
-      - "traefik.http.routers.ama.rule=Host(`amatelier.cz`) || Host(`www.amatelier.cz`)"
-      - "traefik.http.routers.ama.entrypoints=websecure"
-      - "traefik.http.routers.ama.tls.certresolver=cloudflare"
-      - "traefik.http.services.ama.loadbalancer.server.port=80"
+      - "traefik.http.routers.maruska.rule=Host(`umaruskyzlin.cz`) || Host(`www.umaruskyzlin.cz`)"
+      - "traefik.http.routers.maruska.entrypoints=websecure"
+      - "traefik.http.routers.maruska.tls.certresolver=cloudflare"
+      - "traefik.http.services.maruska.loadbalancer.server.port=80"
 
       # HTTP -> HTTPS redirect
-      - "traefik.http.routers.ama-http.rule=Host(`amatelier.cz`) || Host(`www.amatelier.cz`)"
-      - "traefik.http.routers.ama-http.entrypoints=web"
-      - "traefik.http.routers.ama-http.middlewares=ama-redirect-to-https"
+      - "traefik.http.routers.maruska-http.rule=Host(`umaruskyzlin.cz`) || Host(`www.umaruskyzlin.cz`)"
+      - "traefik.http.routers.maruska-http.entrypoints=web"
+      - "traefik.http.routers.maruska-http.middlewares=maruska-redirect-to-https"
 
-      - "traefik.http.middlewares.ama-redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.maruska-redirect-to-https.redirectscheme.scheme=https"
     networks:
       - traefik
-      - ama
+      - maruska
     restart: unless-stopped
 
   app:
-    container_name: ama_app
+    container_name: maruska_app
     build:
       context: .
       dockerfile: docker/prod/Dockerfile
-    image: ama-prod:latest
+    image: maruska-prod:latest
     working_dir: /var/www
     env_file:
       - ./.env.production
@@ -46,11 +46,11 @@ services:
     expose:
       - "9000"
     networks:
-      - ama
+      - maruska
     restart: unless-stopped
     command: >
       sh -c "php artisan optimize:clear &&
-             php-fpm -F"                       # FPM běží na popředí
+             php-fpm -F"                       
 
 volumes:
   storage_data:
@@ -59,5 +59,5 @@ volumes:
 networks:
   traefik:
     external: true
-  ama:
+  maruska:
     external: true
