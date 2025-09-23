@@ -40,7 +40,7 @@ const Footer = () => {
                         <Link href="/" className="flex items-center space-x-2 mb-6">
                             <Coffee className="h-8 w-8 text-primary" />
                             <span className="font-serif text-2xl font-bold text-foreground">
-                                Café <span className="text-primary">Luxe</span>
+                                U <span className="text-primary">Marušky</span>
                             </span>
                         </Link>
                         <p className="text-muted-foreground leading-relaxed mb-6">

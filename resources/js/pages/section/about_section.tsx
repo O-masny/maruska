@@ -21,7 +21,7 @@ const AboutSection = () => {
                     <div ref={textRef} className="space-y-6">
                         <h2 className="text-section-title mb-4 text-foreground">O nás</h2>
                         <p className="text-large text-muted-foreground">
-                            Café Luna je místem, kde se setkává vášeň pro kávu s moderním designem. Naše kavárna
+                            Kavárna a Cukrárna U Marušky je místem, kde se setkává vášeň pro kávu s moderním designem. Naše kavárna
                             vznikla z lásky k dokonalé chuti a přání vytvořit prostor, kde se každý host cítí výjimečně.
                         </p>
                         <p className="text-large text-muted-foreground">

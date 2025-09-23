@@ -46,9 +46,9 @@ const Hero = () => {
                         </div>
 
                         <h1 className="font-serif text-6xl md:text-8xl font-bold text-white mb-8 leading-tight">
-                            Café<br />
+                            U<br />
                             <span className="bg-gradient-to-r from-gold to-gold-light bg-clip-text text-transparent">
-                                Luxe
+                                Marušky
                             </span>
                         </h1>
 

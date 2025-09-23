@@ -35,7 +35,7 @@ const HeroSection = () => {
 
             {/* Content */}
             <div ref={contentRef} className="relative z-10 text-center text-white px-4 max-w-5xl mx-auto">
-                <h1 className="text-hero mb-6">Café Luna</h1>
+                <h1 className="text-hero mb-6">U Marušky</h1>
                 <p className="text-subtitle mb-12 max-w-2xl mx-auto">
                     Vychutnejte si dokonalou kávu a dezerty v moderní atmosféře naší kavárny
                 </p>
