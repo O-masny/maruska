@@ -1,14 +1,10 @@
-import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    server: {
-        host: '127.0.0.1', // <<< fixne net::ERR_NETWORK_ACCESS_DENIED
-        port: 5173,
-    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],
@@ -17,11 +13,13 @@ export default defineConfig({
         }),
         react(),
         tailwindcss(),
-        wayfinder({
-            formVariants: false,
-        }),
     ],
     esbuild: {
         jsx: 'automatic',
+    },
+    resolve: {
+        alias: {
+            'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
+        },
     },
 });
