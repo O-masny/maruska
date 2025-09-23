@@ -10,7 +10,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/', function () {
-    return Inertia::render('Index');
+    return Inertia::render('index');
 })->name('home');
 
 // Blog
