@@ -49,8 +49,12 @@ services:
       - maruska
     restart: unless-stopped
     command: >
-      sh -c "php artisan optimize:clear &&
-             php-fpm -F"                       
+    entrypoint: >
+      sh -c "mkdir -p /var/www/database &&
+             touch /var/www/database/database.sqlite &&
+             chown -R www-data:www-data /var/www/database /var/www/storage &&
+             php artisan migrate --force &&
+             php-fpm -F"                  
 
 volumes:
   storage_data:
