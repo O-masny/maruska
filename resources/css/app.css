@@ -201,12 +201,114 @@
     .shadow-glow {
         box-shadow: 0 0 20px hsl(var(--primary) / 0.4);
     }
+
+    .text-hero {
+        @apply text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight font-serif leading-tight;
+    }
+
+    .text-section-title {
+        @apply text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight font-serif;
+    }
+
+    .text-subtitle {
+        @apply text-lg sm:text-xl text-muted-foreground leading-relaxed;
+    }
+
+    .text-large {
+        @apply text-lg sm:text-xl leading-relaxed;
+    }
+
+    .text-body {
+        @apply text-base text-foreground leading-relaxed;
+    }
+
+    .text-caption {
+        @apply text-sm text-muted-foreground;
+    }
+
+    .section-padding {
+        @apply py-20 sm:py-28 md:py-32;
+    }
+
+    .container-default {
+        @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+    }
+
+    .btn-primary {
+        @apply bg-gradient-to-r from-purple-600 to-pink-500 text-white font-medium rounded-full px-8 py-4 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105;
+    }
+
+    .btn-outline {
+        @apply border border-white text-white rounded-full px-8 py-4 font-medium hover:bg-white hover:text-foreground transition-all duration-300;
+    }
+
+    .btn-ghost {
+        @apply text-muted-foreground hover:text-primary transition-colors duration-300;
+    }
 }
 
 /* ===== UTILITIES ===== */
 @layer utilities {
     .hover-scale {
         @apply transform transition-transform duration-300 hover:scale-105;
+    }
+
+    .fade-in {
+        @apply opacity-0 translate-y-0;
+        animation: fadeIn 1.2s ease-out forwards;
+    }
+
+    .fade-in-up {
+        @apply opacity-0 translate-y-6;
+        animation: fadeInUp 1s ease-out forwards;
+    }
+
+    .shadow-luxury {
+        box-shadow: 0 0 40px rgba(147, 51, 234, 0.3), 0 0 60px rgba(236, 72, 153, 0.25);
+    }
+
+    .shadow-elegant {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .fade-in-delay {
+        @apply opacity-0;
+        animation: fadeIn 1.2s ease-out forwards;
+        animation-delay: 0.5s;
+    }
+
+    .parallax {
+        background-attachment: fixed;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .section-padding {
+        @apply py-24 sm:py-32;
+    }
+
+    .text-hero {
+        @apply text-5xl sm:text-7xl md:text-8xl font-extrabold tracking-tight font-serif leading-tight;
+    }
+
+    .text-section-title {
+        @apply text-4xl sm:text-5xl font-bold tracking-tight;
+    }
+
+    .text-large {
+        @apply text-lg sm:text-xl leading-relaxed;
+    }
+
+    .bg-gradient-primary {
+        background: linear-gradient(135deg, #9333ea, #ec4899);
+    }
+
+    .shadow-luxury {
+        box-shadow: 0 0 40px rgba(147, 51, 234, 0.3), 0 0 60px rgba(236, 72, 153, 0.25);
+    }
+
+    .shadow-elegant {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
 
     .fade-in-up {
@@ -244,6 +346,29 @@
 
     .page-transition {
         animation: pageEnter 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ---------- Keyframes ---------- */
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     @keyframes pageEnter {

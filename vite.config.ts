@@ -5,6 +5,10 @@ import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+    server: {
+        host: '127.0.0.1', // <<< fixne net::ERR_NETWORK_ACCESS_DENIED
+        port: 5173,
+    },
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.tsx'],

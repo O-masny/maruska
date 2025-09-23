@@ -1,18 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Link, usePage } from "@inertiajs/react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Coffee, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const Navigation = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const { url } = usePage(); // aktuální URL od Inertia
+    const { url } = usePage();
 
     useEffect(() => {
         const handleScroll = () => {
             setIsScrolled(window.scrollY > 50);
         };
-
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
@@ -39,7 +39,7 @@ const Navigation = () => {
                     {/* Logo */}
                     <Link href="/" className="flex items-center space-x-2 group">
                         <div className="relative">
-                            <Coffee className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
+                            <Coffee className="h-8 w-8 text-primary transition-transform duration-300 group-hover:rotate-12" />
                             <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                         </div>
                         <span className="font-serif text-2xl font-bold text-foreground">
@@ -54,21 +54,26 @@ const Navigation = () => {
                                 key={item.name}
                                 href={item.href}
                                 className={`relative px-4 py-2 rounded-full font-medium transition-all duration-300 group ${isActive(item.href)
-                                    ? "text-primary bg-primary/10"
-                                    : "text-foreground hover:text-primary hover:bg-primary/5"
+                                    ? "text-primary"
+                                    : "text-foreground hover:text-primary"
                                     }`}
                             >
                                 <span className="relative z-10">{item.name}</span>
-                                {isActive(item.href) && (
-                                    <span className="absolute inset-0 bg-gradient-primary rounded-full opacity-10" />
-                                )}
-                                <span className="absolute inset-0 rounded-full bg-gradient-primary opacity-0 group-hover:opacity-5 transition-opacity duration-300" />
+                                {/* underline animation */}
+                                <span
+                                    className={`absolute bottom-1 left-4 right-4 h-[2px] bg-primary transition-transform duration-500 origin-left ${isActive(item.href)
+                                        ? "scale-x-100"
+                                        : "scale-x-0 group-hover:scale-x-100"
+                                        }`}
+                                />
                             </Link>
                         ))}
 
                         <div className="ml-4 pl-4 border-l border-border">
-                            <Button className="bg-gradient-primary hover:shadow-luxury font-medium rounded-full px-8">
-                                Rezervace
+                            <Button className="bg-gradient-primary hover:shadow-luxury font-medium rounded-full px-8 relative overflow-hidden">
+                                <span className="relative z-10">Rezervace</span>
+                                {/* shimmer effect */}
+                                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]" />
                             </Button>
                         </div>
                     </div>
@@ -87,28 +92,36 @@ const Navigation = () => {
                 </div>
 
                 {/* Mobile Menu */}
-                {isMenuOpen && (
-                    <div className="md:hidden absolute top-full left-0 right-0 bg-card/95 backdrop-blur-md border-b border-border shadow-luxury">
-                        <div className="px-4 py-6 space-y-4">
-                            {navigationItems.map((item) => (
-                                <Link
-                                    key={item.name}
-                                    href={item.href}
-                                    className={`block py-2 font-medium transition-colors duration-300 ${isActive(item.href)
-                                        ? "text-primary"
-                                        : "text-foreground hover:text-primary"
-                                        }`}
-                                    onClick={() => setIsMenuOpen(false)}
-                                >
-                                    {item.name}
-                                </Link>
-                            ))}
-                            <Button className="w-full bg-gradient-primary hover:shadow-luxury font-medium mt-4">
-                                Rezervace
-                            </Button>
-                        </div>
-                    </div>
-                )}
+                <AnimatePresence>
+                    {isMenuOpen && (
+                        <motion.div
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.3 }}
+                            className="md:hidden absolute top-full left-0 right-0 bg-card/95 backdrop-blur-md border-b border-border shadow-luxury"
+                        >
+                            <div className="px-4 py-6 space-y-4">
+                                {navigationItems.map((item) => (
+                                    <Link
+                                        key={item.name}
+                                        href={item.href}
+                                        className={`block py-2 font-medium transition-colors duration-300 ${isActive(item.href)
+                                            ? "text-primary"
+                                            : "text-foreground hover:text-primary"
+                                            }`}
+                                        onClick={() => setIsMenuOpen(false)}
+                                    >
+                                        {item.name}
+                                    </Link>
+                                ))}
+                                <Button className="w-full bg-gradient-primary hover:shadow-luxury font-medium mt-4">
+                                    Rezervace
+                                </Button>
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </nav>
     );
