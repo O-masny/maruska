@@ -39,7 +39,7 @@ const AboutSection = () => {
                     <div ref={imgWrapRef} className="relative">
                         <img
                             src={coffeeMaking}
-                            alt="Příprava kávy v Café Luna"
+                            alt="Příprava kávy u Marušky"
                             className="w-full h-96 lg:h-[500px] object-cover rounded-2xl shadow-2xl"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl pointer-events-none" />

@@ -1,111 +1,129 @@
-import { useState, useEffect } from 'react';
-import { ChevronUp, ChevronDown } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const SectionNavigation = () => {
     const [currentSection, setCurrentSection] = useState(0);
     const [sections, setSections] = useState<HTMLElement[]>([]);
 
     useEffect(() => {
-        // Find all sections on the page
-        const sectionElements = Array.from(document.querySelectorAll('section')) as HTMLElement[];
+        const sectionElements = Array.from(
+            document.querySelectorAll("section")
+        ) as HTMLElement[];
         setSections(sectionElements);
 
-        const observerOptions = {
-            threshold: 0.5,
-            rootMargin: '-10% 0px -10% 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const index = sectionElements.indexOf(entry.target as HTMLElement);
-                    setCurrentSection(index);
-                }
-            });
-        }, observerOptions);
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        const index = sectionElements.indexOf(entry.target as HTMLElement);
+                        setCurrentSection(index);
+                    }
+                });
+            },
+            { threshold: 0.5, rootMargin: "-10% 0px -10% 0px" }
+        );
 
         sectionElements.forEach((section) => observer.observe(section));
-
         return () => observer.disconnect();
     }, []);
 
-    const scrollToSection = (direction: 'up' | 'down') => {
-        const targetIndex = direction === 'up'
-            ? Math.max(0, currentSection - 1)
-            : Math.min(sections.length - 1, currentSection + 1);
-
-        if (sections[targetIndex]) {
-            sections[targetIndex].scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
+    const scrollToSection = (index: number) => {
+        if (sections[index]) {
+            sections[index].scrollIntoView({
+                behavior: "smooth",
+                block: "start",
             });
         }
     };
 
-    // Don't show if there are no sections or only one section
     if (sections.length <= 1) return null;
 
     return (
-        <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40">
-            <div className="flex flex-col space-y-2">
-                {/* Up arrow */}
+        <>
+            {/* Desktop side nav */}
+            <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col space-y-3">
                 <Button
                     size="icon"
                     variant="outline"
-                    onClick={() => scrollToSection('up')}
                     disabled={currentSection === 0}
-                    className={`
-            w-12 h-12 rounded-full border-2 backdrop-blur-md transition-all duration-300
-            ${currentSection === 0
-                            ? 'opacity-50 cursor-not-allowed bg-card/50'
-                            : 'hover:bg-primary hover:text-white hover:border-primary bg-card/80 border-border hover:shadow-luxury'
-                        }
-          `}
+                    onClick={() => scrollToSection(currentSection - 1)}
+                    className="w-12 h-12 rounded-full backdrop-blur-md"
                 >
                     <ChevronUp className="h-5 w-5" />
                 </Button>
 
-                {/* Section indicators */}
-                <div className="flex flex-col space-y-1 py-2">
+                <div className="flex flex-col items-center space-y-2">
                     {sections.map((_, index) => (
-                        <button
+                        <motion.button
                             key={index}
-                            onClick={() => {
-                                sections[index]?.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
+                            onClick={() => scrollToSection(index)}
+                            className="w-2 h-6 rounded-full bg-border"
+                            animate={{
+                                backgroundColor:
+                                    index === currentSection ? "hsl(var(--primary))" : "hsl(var(--border))",
+                                scale: index === currentSection ? 1.2 : 1,
                             }}
-                            className={`
-                w-2 h-8 rounded-full transition-all duration-300
-                ${index === currentSection
-                                    ? 'bg-primary shadow-glow'
-                                    : 'bg-border hover:bg-muted-foreground'
-                                }
-              `}
+                            transition={{ duration: 0.3 }}
                         />
                     ))}
                 </div>
 
-                {/* Down arrow */}
                 <Button
                     size="icon"
                     variant="outline"
-                    onClick={() => scrollToSection('down')}
                     disabled={currentSection === sections.length - 1}
-                    className={`
-            w-12 h-12 rounded-full border-2 backdrop-blur-md transition-all duration-300
-            ${currentSection === sections.length - 1
-                            ? 'opacity-50 cursor-not-allowed bg-card/50'
-                            : 'hover:bg-primary hover:text-white hover:border-primary bg-card/80 border-border hover:shadow-luxury'
-                        }
-          `}
+                    onClick={() => scrollToSection(currentSection + 1)}
+                    className="w-12 h-12 rounded-full backdrop-blur-md"
                 >
                     <ChevronDown className="h-5 w-5" />
                 </Button>
             </div>
-        </div>
+
+            {/* Mobile/Tablet bottom nav */}
+            <div className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm px-4">
+                <div className="flex items-center justify-between rounded-2xl bg-card/90 backdrop-blur-md border shadow-lg px-4 py-3">
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        disabled={currentSection === 0}
+                        onClick={() => scrollToSection(currentSection - 1)}
+                    >
+                        <ChevronUp className="h-5 w-5" />
+                    </Button>
+
+                    <div className="flex space-x-2">
+                        {sections.map((_, index) => (
+                            <motion.div
+                                key={index}
+                                onClick={() => scrollToSection(index)}
+                                className="w-2 h-2 rounded-full cursor-pointer"
+                                animate={{
+                                    backgroundColor:
+                                        index === currentSection
+                                            ? "hsl(var(--primary))"
+                                            : "hsl(var(--muted-foreground))",
+                                    scale: index === currentSection ? 1.4 : 1,
+                                }}
+                                transition={{ duration: 0.3 }}
+                            />
+                        ))}
+                    </div>
+
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        disabled={currentSection === sections.length - 1}
+                        onClick={() => scrollToSection(currentSection + 1)}
+                    >
+                        <ChevronDown className="h-5 w-5" />
+                    </Button>
+                </div>
+            </div>
+        </>
     );
 };
 

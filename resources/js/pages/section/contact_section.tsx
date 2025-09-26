@@ -1,15 +1,14 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { clipReveal, driftX, reveal } from "@/lib/scrollFx"
+import { Link } from "@inertiajs/react"
 import { Clock, Mail, MapPin, Phone } from "lucide-react"
 import { useEffect, useRef } from "react"
 
 const ContactSection = () => {
     const wrapRef = useRef<HTMLDivElement>(null)
-
-    const handleReservation = () => {
-        alert("Rezervační systém bude brzy k dispozici!")
-    }
 
     useEffect(() => {
         if (!wrapRef.current) return
@@ -19,7 +18,9 @@ const ContactSection = () => {
     }, [])
 
     return (
-        <section id="contact" className="section-padding bg-gradient-to-b from-secondary/30 to-background relative">
+        <section id="contact" className="section-padding bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(var(--primary))_0%,transparent_50%),radial-gradient(circle_at_20%_80%,hsl(var(--secondary))_0%,transparent_50%)] opacity-5 pointer-events-none" />
+
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-section-title mb-6 text-foreground">Kontakt</h2>
@@ -59,8 +60,8 @@ const ContactSection = () => {
                                 title: "Otevírací doba",
                                 content: (
                                     <div className="space-y-1">
-                                        <p>Pondělí - Pátek: 7:00 - 20:00</p>
-                                        <p>Sobota - Neděle: 8:00 - 21:00</p>
+                                        <p>Pondělí – Pátek: 7:00 – 20:00</p>
+                                        <p>Sobota – Neděle: 8:00 – 21:00</p>
                                     </div>
                                 ),
                             },
@@ -84,14 +85,17 @@ const ContactSection = () => {
                             </Card>
                         ))}
 
-                        <Button
-                            onClick={handleReservation}
-                            size="lg"
-                            className="w-full relative bg-gradient-primary hover:shadow-luxury font-medium py-4 rounded-full transition-all duration-300 hover:scale-105 overflow-hidden"
-                        >
-                            <span className="relative z-10">Rezervovat stůl</span>
-                            <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_2s_infinite]" />
-                        </Button>
+                        <Link href="/kontakt" className="block mt-8">
+                            <Button
+                                size="lg"
+                                className="w-full h-14 font-medium rounded-full bg-primary text-primary-foreground 
+               hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(0,0,0,0.15)]
+               transition-all duration-300 ease-out"
+                            >
+                                Napište nám
+                            </Button>
+                        </Link>
+
                     </div>
 
                     {/* Map */}
