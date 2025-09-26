@@ -1,101 +1,80 @@
-// resources/js/components/SuppliersSlide.tsx
-import { driftX, perspectiveParallax, reveal } from '@/lib/scrollFx'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+'use client'
+
+import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
+import { reveal } from '@/lib/scrollFx'
 
 interface Supplier {
     id: number
     name: string
-    description: string
-    image: string
     specialty: string
+    image: string
 }
 
-const SuppliersSlider = () => {
-    const [currentSlide, setCurrentSlide] = useState(0)
+interface SuppliersSliderProps {
+    suppliers: Supplier[]
+}
+
+const SuppliersSlider = ({ suppliers }: SuppliersSliderProps) => {
     const wrapRef = useRef<HTMLDivElement>(null)
-
-    const suppliers: Supplier[] = [
-        { id: 1, name: 'Pražírna Doubleshot', description: 'Specialista na single origin kávy z celého světa', image: '/api/placeholder/300/200', specialty: 'Prémiová káva' },
-        { id: 2, name: 'Cukrárna Krásná', description: 'Ruční výroba dezertů podle tradičních receptů', image: '/api/placeholder/300/200', specialty: 'Sladkosti' },
-        { id: 3, name: 'Mlékárna Český ráj', description: 'Čerstvé mléčné výrobky z vlastní farmy', image: '/api/placeholder/300/200', specialty: 'Mléčné výrobky' },
-        { id: 4, name: 'Pekárna U Anděla', description: 'Čerstvé pečivo a croissanty každý den', image: '/api/placeholder/300/200', specialty: 'Pečivo' },
-        { id: 5, name: 'Čajovna Himalaya', description: 'Exkluzivní čaje z nejvyšších poloh', image: '/api/placeholder/300/200', specialty: 'Čaje' },
-    ]
+    const [isPaused, setIsPaused] = useState(false)
 
     useEffect(() => {
-        const timer = setInterval(() => setCurrentSlide((p) => (p + 1) % suppliers.length), 4000)
-        return () => clearInterval(timer)
-    }, [suppliers.length])
-
-    useEffect(() => {
-        if (!wrapRef.current) return
-        reveal(wrapRef.current, { y: 26, stagger: 0.1 })
-        driftX(wrapRef.current.querySelectorAll('.supplier-card'), 14)
-        perspectiveParallax(wrapRef.current.querySelectorAll('.supplier-card img'), 1.06, 18)
+        if (wrapRef.current) reveal(wrapRef.current, { y: 20, stagger: 0.1 })
     }, [])
 
-    const next = () => setCurrentSlide((p) => (p + 1) % suppliers.length)
-    const prev = () => setCurrentSlide((p) => (p - 1 + suppliers.length) % suppliers.length)
-    const goTo = (i: number) => setCurrentSlide(i)
+    if (!suppliers?.length) return null
+
+    // Infinite scroll — duplikujeme array
+    const duplicated = [...suppliers, ...suppliers]
 
     return (
-        <section className="section-padding bg-gradient-elegant">
-            <div className="container-default">
-                <div className="text-center mb-16">
-                    <h2 className="text-section-title mb-4 text-foreground">
-                        Naši <span className="text-primary">Dodavatelé</span>
-                    </h2>
-                    <p className="text-subtitle max-w-3xl mx-auto">
-                        Spolupracujeme pouze s nejlepšími dodavateli, kteří sdílejí naše hodnoty kvality a tradice
-                    </p>
-                </div>
+        <section
+            className="section-padding bg-background overflow-hidden"
+            ref={wrapRef}
+        >
+            <div className="container-default text-center mb-12">
+                <h2 className="text-section-title mb-4 text-foreground">
+                    Naši <span className="text-primary">dodavatelé</span>
+                </h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                    Spolupracujeme s lokálními partnery, kteří sdílí naši vášeň pro kvalitu
+                </p>
+            </div>
 
-                <div className="relative" ref={wrapRef}>
-                    <div className="overflow-hidden rounded-2xl">
+            <div
+                className="relative overflow-hidden"
+                onMouseEnter={() => setIsPaused(true)}
+                onMouseLeave={() => setIsPaused(false)}
+                onTouchStart={() => setIsPaused(true)}
+                onTouchEnd={() => setIsPaused(false)}
+            >
+                <motion.div
+                    className="flex gap-12 items-center"
+                    animate={{ x: isPaused ? 0 : ['0%', '-50%'] }}
+                    transition={{
+                        duration: 25,
+                        ease: 'linear',
+                        repeat: Infinity,
+                    }}
+                >
+                    {duplicated.map((s, i) => (
                         <div
-                            className="flex transition-transform duration-700 ease-in-out"
-                            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                            key={`${s.id}-${i}`}
+                            className="group relative flex-shrink-0 w-40 md:w-48"
                         >
-                            {suppliers.map((s) => (
-                                <div key={s.id} className="w-full flex-shrink-0">
-                                    <div className="supplier-card bg-card rounded-2xl shadow-luxury p-8 mx-4">
-                                        <div className="flex flex-col lg:flex-row items-center gap-8">
-                                            <div className="lg:w-1/2">
-                                                <img src={s.image} alt={s.name} className="w-full h-64 object-cover rounded-xl shadow-elegant" />
-                                            </div>
-                                            <div className="lg:w-1/2 text-center lg:text-left">
-                                                <span className="inline-block px-3 py-1 bg-gradient-primary text-white text-sm font-medium rounded-full mb-4">
-                                                    {s.specialty}
-                                                </span>
-                                                <h3 className="font-serif text-3xl font-bold text-foreground mb-4">{s.name}</h3>
-                                                <p className="text-lg text-muted-foreground leading-relaxed">{s.description}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    <button onClick={prev} className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-luxury rounded-full p-3 transition-transform hover:scale-110" aria-label="Předchozí">
-                        <ChevronLeft className="h-6 w-6 text-primary" />
-                    </button>
-                    <button onClick={next} className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white shadow-luxury rounded-full p-3 transition-transform hover:scale-110" aria-label="Další">
-                        <ChevronRight className="h-6 w-6 text-primary" />
-                    </button>
-
-                    <div className="flex justify-center mt-8 space-x-2">
-                        {suppliers.map((_, i) => (
-                            <button
-                                key={i}
-                                onClick={() => goTo(i)}
-                                className={`h-2 rounded-full transition-all duration-300 ${i === currentSlide ? 'bg-primary w-8' : 'bg-muted-foreground/30 w-2 hover:bg-muted-foreground/50'}`}
-                                aria-label={`Jít na slid ${i + 1}`}
+                            <img
+                                src={s.image}
+                                alt={s.name}
+                                className="w-full h-24 object-contain opacity-80 group-hover:opacity-100 transition-opacity duration-300"
                             />
-                        ))}
-                    </div>
-                </div>
+                            <div className="absolute inset-0 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/50 to-transparent text-white text-xs p-2 rounded-lg">
+                                <span className="font-medium">{s.name}</span>
+                                <span className="text-white/80">{s.specialty}</span>
+                            </div>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
         </section>
     )

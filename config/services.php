@@ -27,7 +27,11 @@ return [
     'resend' => [
         'key' => env('RESEND_KEY'),
     ],
-
+    'brevo' => [
+        'dsn' => env('MAILER_DSN'),
+        'key' => env('BREVO_API_KEY'),
+        'template_id' => env('BREVO_TEMPLATE_ID'),
+    ],
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

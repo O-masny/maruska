@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources\Events\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 
 class EventsTable
 {
@@ -15,33 +19,35 @@ class EventsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('cover_image')
+                    ->label('Obrázek')
+                    ->size(48)
+                    ->circular(),
+
                 TextColumn::make('title')
-                    ->searchable(),
+                    ->label('Název akce')
+                    ->limit(40)
+                    ->searchable()
+                    ->sortable(),
+
+                BadgeColumn::make('type')
+                    ->label('Typ')
+                    ->color('info'),
+
                 TextColumn::make('date')
-                    ->date()
+                    ->label('Datum')
+                    ->date('d.m.Y')
                     ->sortable(),
-                TextColumn::make('time')
-                    ->searchable(),
-                TextColumn::make('type')
-                    ->searchable(),
+
                 TextColumn::make('capacity')
-                    ->numeric()
-                    ->sortable(),
-                ImageColumn::make('cover_image'),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->label('Kapacita')
+                    ->getStateUsing(fn($record) => "{$record->capacity} míst"),
             ])
-            ->filters([
-                //
-            ])
+            ->defaultSort('date', 'desc')
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

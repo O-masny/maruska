@@ -5,9 +5,11 @@ import Navigation from '@/components/Navigation'
 import PageTransition from '@/components/PageTransition'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { destroyLenis, initLenis } from '@/lib/scrollFx'
 import { Link, usePage } from '@inertiajs/react'
 import { motion } from 'framer-motion'
 import { Calendar, Clock } from 'lucide-react'
+import { useEffect } from 'react'
 
 interface Event {
     id: number
@@ -26,7 +28,10 @@ interface Event {
 
 const EventsIndex = () => {
     const { events } = usePage().props as unknown as { events: Event[] }
-
+    useEffect(() => {
+        initLenis()
+        return () => destroyLenis()
+    }, [])
     return (
         <PageTransition>
             <div className="min-h-screen">

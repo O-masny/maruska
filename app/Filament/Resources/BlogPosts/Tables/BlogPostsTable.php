@@ -2,12 +2,16 @@
 
 namespace App\Filament\Resources\BlogPosts\Tables;
 
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
+use Filament\Tables;
+use Filament\Tables\Table;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Table;
+use Filament\Tables\Columns\BadgeColumn;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
 
 class BlogPostsTable
 {
@@ -15,31 +19,33 @@ class BlogPostsTable
     {
         return $table
             ->columns([
+                ImageColumn::make('cover_image')
+                    ->label('Obrázek')
+                    ->circular()
+                    ->size(48),
+
                 TextColumn::make('title')
-                    ->searchable(),
-                TextColumn::make('slug')
-                    ->searchable(),
-                ImageColumn::make('cover_image'),
-                TextColumn::make('published_at')
-                    ->dateTime()
+                    ->label('Název')
+                    ->limit(40)
+                    ->searchable()
                     ->sortable(),
-                TextColumn::make('user_id')
-                    ->numeric()
+
+                TextColumn::make('author.name')
+                    ->label('Autor')
                     ->sortable(),
-                TextColumn::make('created_at')
-                    ->dateTime()
+
+                BadgeColumn::make('published_at')
+                    ->label('Publikace')
+                    ->date('d.m.Y H:i')
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->color(fn($record) => $record->published_at ? 'success' : 'secondary')
+                    ->formatStateUsing(fn($state) => $state ? 'Publikováno' : 'Koncept'),
             ])
-            ->filters([
-                //
-            ])
+            ->defaultSort('published_at', 'desc')
             ->recordActions([
+                ViewAction::make(),
                 EditAction::make(),
+                DeleteAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([

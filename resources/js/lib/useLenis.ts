@@ -1,63 +1,62 @@
-import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
+import { useEffect } from "react";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const useLenis = () => {
     useEffect(() => {
-        // Init Lenis
         const lenis = new Lenis({
-            duration: 1.2,
-            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth ease-out
+            duration: 1.6, // delší => hladší
+            easing: (t: number) =>
+                1 - Math.pow(1 - t, 3), // cubic-out, měkčí a přirozený
             smoothWheel: true,
+            touchMultiplier: 1.5, // lepší reakce na touch
         });
 
-        // Raf loop
-        function raf(time: number) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-
-        // Lenis ↔ ScrollTrigger sync
+        // GSAP <-> Lenis sync
         lenis.on("scroll", ScrollTrigger.update);
+        gsap.ticker.add((time) => lenis.raf(time * 1000));
 
-        // OPTIONAL: Example parallax effect
-        const images = document.querySelectorAll<HTMLElement>("[data-parallax]");
-        images.forEach((img) => {
-            gsap.to(img, {
-                yPercent: 30,
+        // Lazy-refresh ScrollTrigger (ne každým frame)
+        ScrollTrigger.config({ autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" });
+
+        // Parallax efekt
+        const parallaxEls = document.querySelectorAll<HTMLElement>("[data-parallax]");
+        parallaxEls.forEach((el) => {
+            gsap.to(el, {
+                yPercent: 20,
                 ease: "none",
                 scrollTrigger: {
-                    trigger: img,
+                    trigger: el,
                     start: "top bottom",
                     scrub: true,
                 },
             });
         });
 
-        // OPTIONAL: Fade-in elements
-        const fadeEls = document.querySelectorAll(".fade-in-up");
-        fadeEls.forEach((el) => {
+        // Fade-in animace
+        gsap.utils.toArray(".fade-in-up").forEach((el: any) => {
             gsap.fromTo(
                 el,
                 { opacity: 0, y: 40 },
                 {
                     opacity: 1,
                     y: 0,
-                    duration: 1,
+                    duration: 1.2,
                     ease: "power3.out",
                     scrollTrigger: {
                         trigger: el,
-                        start: "top 85%",
+                        start: "top 80%",
+                        toggleActions: "play none none reverse",
                     },
                 }
             );
         });
 
         return () => {
+            gsap.ticker.remove((time) => lenis.raf(time * 1000));
             lenis.destroy();
             ScrollTrigger.getAll().forEach((st) => st.kill());
         };
