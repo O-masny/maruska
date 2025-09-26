@@ -73,7 +73,7 @@ Route::get('/akce', [EventController::class, 'index'])->name('events.index');
 Route::get('/akce/{event}', [EventController::class, 'show'])->name('events.show');
 
 // ☕ O nás
-Route::get('/o-nas', fn() => Inertia::render('About'))->name('about');
+Route::get('/o-nas', fn() => Inertia::render('about'))->name('about');
 
 // 📞 Kontakt
 Route::get('/kontakt', fn() => Inertia::render('contact'))->name('contact');

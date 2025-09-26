@@ -1,5 +1,6 @@
 'use client'
 
+import { ContactMap } from "@/components/Contact/ContactMap"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { clipReveal, driftX, reveal } from "@/lib/scrollFx"
@@ -38,8 +39,10 @@ const ContactSection = () => {
                                 title: "Adresa",
                                 content: (
                                     <>
-                                        Náměstí Míru 123 <br />
-                                        120 00 Praha 2 <br />
+                                        Vodní
+                                        <br />
+                                        760 01 Zlín 1
+                                        <br />
                                         Česká republika
                                     </>
                                 ),
@@ -53,7 +56,7 @@ const ContactSection = () => {
                             {
                                 icon: <Mail className="w-6 h-6 text-primary" />,
                                 title: "Email",
-                                content: "info@cafeluna.cz",
+                                content: "monika.maruska@seznam.cz",
                             },
                             {
                                 icon: <Clock className="w-6 h-6 text-primary" />,
@@ -98,27 +101,10 @@ const ContactSection = () => {
 
                     </div>
 
-                    {/* Map */}
-                    <div className="contact-card">
-                        <Card className="border-0 shadow-lg overflow-hidden bg-card">
-                            <CardContent className="p-0">
-                                <div className="aspect-square lg:aspect-auto lg:h-[600px] bg-muted relative">
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="text-center">
-                                            <MapPin className="w-16 h-16 text-primary mx-auto mb-4" />
-                                            <p className="text-muted-foreground font-medium">Interaktivní mapa</p>
-                                            <p className="text-sm text-muted-foreground mt-2">
-                                                Náměstí Míru 123, Praha 2
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </div>
+                    <ContactMap />
                 </div>
             </div>
-        </section>
+        </section >
     )
 }
 
