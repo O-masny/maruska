@@ -35,6 +35,9 @@ RUN npm run build
 
 # Práva
 RUN chown -R www-data:www-data storage bootstrap/cache database
-
+RUN { \
+    echo "upload_max_filesize=50M"; \
+    echo "post_max_size=55M"; \
+} > /usr/local/etc/php/conf.d/uploads.ini
 EXPOSE 9000
 CMD ["php-fpm"]
