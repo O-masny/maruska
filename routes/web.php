@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EventController;
 use App\Models\BlogPost;
 use App\Models\Event;
@@ -77,6 +78,7 @@ Route::get('/o-nas', fn() => Inertia::render('about'))->name('about');
 
 // 📞 Kontakt
 Route::get('/kontakt', fn() => Inertia::render('contact'))->name('contact');
+Route::post('/kontakt', [ContactController::class, 'send'])->name('contact.send');
 
 // 🗓️ Rezervace
 Route::get('/rezervace', fn() => Inertia::render('Reservation'))->name('reservation');

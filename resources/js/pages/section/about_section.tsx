@@ -1,6 +1,6 @@
 'use client'
 
-import coffeeMaking from '@/assets/hero-cafe.png'
+import coffeeMaking from '@/assets/about.jpg'
 import { Button } from '@/components/ui/button'
 import { parallax, reveal } from '@/lib/scrollFx'
 import { Link } from '@inertiajs/react'

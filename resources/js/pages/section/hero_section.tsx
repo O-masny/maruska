@@ -1,6 +1,6 @@
-'use client' // Modern React directive: komponenta renderuje pouze na klientu
+'use client'
 
-import cafeInterior from '@/assets/hero-cafe.png'
+import cafeInterior from '@/assets/bg.jpg'
 import { Button } from '@/components/ui/button'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowDown } from 'lucide-react'
@@ -8,7 +8,10 @@ import { useRef } from 'react'
 
 const HeroSection = () => {
     const ref = useRef<HTMLDivElement>(null)
-    const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end start'] })
+    const { scrollYProgress } = useScroll({
+        target: ref,
+        offset: ['start start', 'end start'],
+    })
     const y = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
 
     const scrollTo = (id: string) => {
@@ -20,24 +23,22 @@ const HeroSection = () => {
             ref={ref}
             className="relative min-h-screen flex items-center justify-center overflow-hidden"
         >
-            {/* Background with cinematic mask and parallax */}
+            {/* Background image */}
             <motion.div
                 style={{ y, backgroundImage: `url(${cafeInterior})` }}
                 className="absolute inset-0 bg-cover bg-center will-change-transform"
             >
-                {/* Dark gradient overlay */}
+                {/* Gradient & mask layers */}
                 <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
-
-                {/* Mask layer — subtle radial fade at edges */}
                 <div
                     className="absolute inset-0 pointer-events-none before:content-[''] before:absolute before:inset-0 
-                     before:bg-black/30 before:backdrop-blur-sm 
-                     before:[mask-image:radial-gradient(circle_at_center,rgba(0,0,0,1)_40%,transparent_100%)] 
-                     before:[-webkit-mask-image:radial-gradient(circle_at_center,rgba(0,0,0,1)_40%,transparent_100%)]"
+          before:bg-black/30 before:backdrop-blur-sm 
+          before:[mask-image:radial-gradient(circle_at_center,rgba(0,0,0,1)_40%,transparent_100%)] 
+          before:[-webkit-mask-image:radial-gradient(circle_at_center,rgba(0,0,0,1)_40%,transparent_100%)]"
                 />
             </motion.div>
 
-            {/* Content */}
+            {/* --- Foreground Content --- */}
             <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -45,10 +46,11 @@ const HeroSection = () => {
                 className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto"
             >
                 <h1 className="text-6xl sm:text-7xl font-semibold tracking-tight mb-6">
-                    U Marušky
+                    U <span className="text-primary">Marušky</span>
                 </h1>
+
                 <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-2xl mx-auto">
-                    Vychutnejte si dokonalou kávu a dezerty v moderní atmosféře naší kavárny
+                    Vychutnejte si kávu a dezerty v moderní atmosféře naší kavárny
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -73,6 +75,21 @@ const HeroSection = () => {
                     </Button>
                 </div>
             </motion.div>
+
+            <motion.img
+                src="/favicon.svg"
+                alt="blurred logo"
+                style={{ y }}
+                animate={{ opacity: [0.25, 0.4, 0.25] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="
+    absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%]
+    w-[70vw] max-w-[600px]
+    opacity-30 blur-xl
+    drop-shadow-[0_0_40px_rgba(255,255,255,0.25)]
+    pointer-events-none select-none
+  "
+            />
 
             {/* Scroll Indicator */}
             <motion.div

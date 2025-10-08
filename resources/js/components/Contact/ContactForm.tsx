@@ -1,43 +1,101 @@
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { useForm } from "@inertiajs/react"
 import { motion } from "framer-motion"
 import { useState } from "react"
 
 export const ContactForm = () => {
     const [accepted, setAccepted] = useState(false)
 
+    const { data, setData, post, processing, errors, reset, recentlySuccessful } = useForm({
+        firstName: "",
+        lastName: "",
+        email: "",
+        message: "",
+        name: "",
+    })
+
+
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+
         if (!accepted) {
             alert("Prosím potvrďte souhlas se zpracováním osobních údajů.")
             return
         }
-        // TODO: send form data (Inertia.post or Fetch API)
-        alert("Zpráva byla odeslána – děkujeme!")
+
+        const fullName = `${data.firstName || ""} ${data.lastName || ""}`.trim()
+        setData("name", fullName) // <-- důležité
+
+        post("/kontakt/send", {
+            onSuccess: () => {
+                reset()
+                setAccepted(false)
+            },
+            preserveScroll: true,
+        })
     }
+
+
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="grid md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <Label htmlFor="firstName">Jméno</Label>
-                    <Input id="firstName" placeholder="Vaše jméno" required />
+                    <Input
+                        id="firstName"
+                        value={data.firstName}
+                        onChange={(e) => setData("firstName", e.target.value)}
+                        placeholder="Vaše jméno"
+                        required
+                    />
+                    {errors.name && (
+                        <p className="text-sm text-red-500">{errors.name}</p>
+                    )}
                 </div>
                 <div className="space-y-2">
                     <Label htmlFor="lastName">Příjmení</Label>
-                    <Input id="lastName" placeholder="Vaše příjmení" required />
+                    <Input
+                        id="lastName"
+                        value={data.lastName}
+                        onChange={(e) => setData("lastName", e.target.value)}
+                        placeholder="Vaše příjmení"
+                        required
+                    />
                 </div>
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="email">E-mail</Label>
-                <Input id="email" type="email" placeholder="vas@email.cz" required />
+                <Input
+                    id="email"
+                    type="email"
+                    value={data.email}
+                    onChange={(e) => setData("email", e.target.value)}
+                    placeholder="vas@email.cz"
+                    required
+                />
+                {errors.email && (
+                    <p className="text-sm text-red-500">{errors.email}</p>
+                )}
             </div>
 
             <div className="space-y-2">
                 <Label htmlFor="message">Zpráva</Label>
-                <Textarea id="message" rows={6} placeholder="Vaše zpráva..." required />
+                <Textarea
+                    id="message"
+                    rows={6}
+                    value={data.message}
+                    onChange={(e) => setData("message", e.target.value)}
+                    placeholder="Vaše zpráva..."
+                    required
+                />
+                {errors.message && (
+                    <p className="text-sm text-red-500">{errors.message}</p>
+                )}
             </div>
 
             <div className="flex items-start space-x-3">
@@ -46,7 +104,7 @@ export const ContactForm = () => {
                     type="checkbox"
                     checked={accepted}
                     onChange={(e) => setAccepted(e.target.checked)}
-                    className="mt-1"
+                    className="mt-1 accent-primary"
                     required
                 />
                 <Label htmlFor="gdpr" className="text-sm text-muted-foreground">
@@ -57,17 +115,25 @@ export const ContactForm = () => {
                     </a>.
                 </Label>
             </div>
-
-
+            {!processing && recentlySuccessful && (
+                <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center text-sm text-green-500"
+                >
+                    Zpráva byla úspěšně odeslána. 🎉
+                </motion.p>
+            )}
             <motion.button
+                type="submit"
                 whileTap={{ scale: 0.97 }}
-                whileHover={{ scale: 1.02 }}
-                disabled={!accepted}
+                whileHover={{ scale: accepted ? 1.02 : 1 }}
+                disabled={!accepted || processing}
                 className="w-full h-12 bg-primary text-primary-foreground font-medium rounded-full
-             hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(0,0,0,0.12)]
-             transition-all duration-300 disabled:opacity-50"
+          hover:bg-primary/90 hover:shadow-[0_0_20px_hsl(var(--primary)/0.25)]
+          transition-all duration-300 disabled:opacity-50"
             >
-                Odeslat zprávu
+                {processing ? "Odesílám..." : "Odeslat zprávu"}
             </motion.button>
         </form>
     )

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Link, usePage } from "@inertiajs/react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Coffee, Menu, X } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { useEffect, useState } from "react"
 
 const Navigation = () => {
@@ -11,8 +11,11 @@ const Navigation = () => {
     const [isScrolled, setIsScrolled] = useState(false)
     const { url } = usePage()
 
+    // sleduj scroll pro blur/stín
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 30)
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20)
+        }
         window.addEventListener("scroll", handleScroll)
         return () => window.removeEventListener("scroll", handleScroll)
     }, [])
@@ -28,24 +31,27 @@ const Navigation = () => {
     const isActive = (href: string) => url === href
 
     return (
-        <nav
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled
-                ? "backdrop-blur-md bg-background/80 shadow-[0_4px_30px_rgba(0,0,0,0.1)] border-b border-border/50"
-                : "bg-transparent"
+        <motion.header
+            className={`sticky top-0 w-full z-[99999] transition-all duration-500 border-b ${isScrolled
+                ? "backdrop-blur-md bg-background/80 border-border/50 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
+                : "bg-transparent border-transparent"
                 }`}
+            style={{
+                WebkitBackdropFilter: "blur(10px)",
+                backdropFilter: "blur(10px)",
+            }}
         >
             <div className="max-w-7xl mx-auto px-6 flex justify-between items-center h-20">
                 {/* Logo */}
-                <Link href="/" className="flex items-center space-x-2 group">
-                    <motion.div
-                        whileHover={{ rotate: 15 }}
+                <Link href="/" className="flex items-center space-x-3 group">
+                    <motion.img
+                        src="/favicon.svg"
+                        alt="logo"
+                        className="h-7 w-7"
+                        whileHover={{ rotate: 12 }}
                         transition={{ type: "spring", stiffness: 300 }}
-                        className="relative"
-                    >
-                        <Coffee className="h-7 w-7 text-primary" />
-                        <div className="absolute inset-0 blur-md bg-primary/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </motion.div>
-                    <span className="font-serif text-2xl font-bold">
+                    />
+                    <span className="font-serif text-2xl font-bold tracking-tight">
                         U <span className="text-primary">Marušky</span>
                     </span>
                 </Link>
@@ -66,11 +72,11 @@ const Navigation = () => {
                                 <motion.span
                                     layoutId="activeLink"
                                     className="absolute -bottom-1 left-0 right-0 h-[1.5px] bg-primary rounded-full"
+                                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                 />
                             )}
                         </Link>
                     ))}
-
                     <Button className="ml-4 px-6 rounded-full bg-gradient-to-r from-primary to-primary-glow hover:shadow-luxury transition-all duration-300">
                         Rezervace
                     </Button>
@@ -97,7 +103,7 @@ const Navigation = () => {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 80 }}
                         transition={{ duration: 0.3, ease: "easeOut" }}
-                        className="fixed top-0 right-0 w-3/4 max-w-sm h-screen bg-background/95 backdrop-blur-lg border-l border-border/40 shadow-2xl md:hidden z-40"
+                        className="fixed top-0 right-0 w-3/4 max-w-sm h-screen bg-background/95 backdrop-blur-lg border-l border-border/40 shadow-2xl md:hidden z-[999999]"
                     >
                         <div className="flex flex-col items-start p-8 space-y-6">
                             {navigationItems.map((item) => (
@@ -120,7 +126,7 @@ const Navigation = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </motion.header>
     )
 }
 
