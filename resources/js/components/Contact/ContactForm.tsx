@@ -2,8 +2,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { useForm } from "@inertiajs/react"
-import { motion } from "framer-motion"
-import { useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { useEffect, useState } from "react"
 
 export const ContactForm = () => {
     const [accepted, setAccepted] = useState(false)
@@ -16,8 +16,6 @@ export const ContactForm = () => {
         name: "",
     })
 
-
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
@@ -27,7 +25,7 @@ export const ContactForm = () => {
         }
 
         const fullName = `${data.firstName || ""} ${data.lastName || ""}`.trim()
-        setData("name", fullName) // <-- důležité
+        setData("name", fullName)
 
         post("/kontakt/send", {
             onSuccess: () => {
@@ -38,7 +36,13 @@ export const ContactForm = () => {
         })
     }
 
-
+    // automaticky schová success message po pár vteřinách
+    useEffect(() => {
+        if (recentlySuccessful) {
+            const timer = setTimeout(() => reset("message"), 4000)
+            return () => clearTimeout(timer)
+        }
+    }, [recentlySuccessful])
 
     return (
         <form className="space-y-6" onSubmit={handleSubmit}>
@@ -52,10 +56,11 @@ export const ContactForm = () => {
                         placeholder="Vaše jméno"
                         required
                     />
-                    {errors.name && (
-                        <p className="text-sm text-red-500">{errors.name}</p>
+                    {errors.firstName && (
+                        <p className="text-sm text-red-500">{errors.firstName}</p>
                     )}
                 </div>
+
                 <div className="space-y-2">
                     <Label htmlFor="lastName">Příjmení</Label>
                     <Input
@@ -65,6 +70,9 @@ export const ContactForm = () => {
                         placeholder="Vaše příjmení"
                         required
                     />
+                    {errors.lastName && (
+                        <p className="text-sm text-red-500">{errors.lastName}</p>
+                    )}
                 </div>
             </div>
 
@@ -107,7 +115,7 @@ export const ContactForm = () => {
                     className="mt-1 accent-primary"
                     required
                 />
-                <Label htmlFor="gdpr" className="text-sm text-muted-foreground">
+                <Label htmlFor="gdpr" className="text-sm text-muted-foreground leading-relaxed">
                     Souhlasím se zpracováním osobních údajů za účelem vyřízení mé žádosti.
                     Více informací najdete v&nbsp;
                     <a href="/privacy" className="underline hover:text-primary">
@@ -115,26 +123,34 @@ export const ContactForm = () => {
                     </a>.
                 </Label>
             </div>
-            {!processing && recentlySuccessful && (
-                <motion.p
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-center text-sm text-green-500"
-                >
-                    Zpráva byla úspěšně odeslána. 🎉
-                </motion.p>
-            )}
-            <motion.button
-                type="submit"
-                whileTap={{ scale: 0.97 }}
-                whileHover={{ scale: accepted ? 1.02 : 1 }}
-                disabled={!accepted || processing}
-                className="w-full h-12 bg-primary text-primary-foreground font-medium rounded-full
-          hover:bg-primary/90 hover:shadow-[0_0_20px_hsl(var(--primary)/0.25)]
-          transition-all duration-300 disabled:opacity-50"
-            >
-                {processing ? "Odesílám..." : "Odeslat zprávu"}
-            </motion.button>
+
+            <AnimatePresence mode="wait">
+                {recentlySuccessful ? (
+                    <motion.p
+                        key="success"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-center text-sm text-green-500"
+                    >
+                        Zpráva byla úspěšně odeslána. 🎉
+                    </motion.p>
+                ) : (
+                    <motion.button
+                        key="submit"
+                        type="submit"
+                        whileTap={{ scale: 0.97 }}
+                        whileHover={{ scale: accepted ? 1.02 : 1 }}
+                        disabled={!accepted || processing}
+                        className="w-full h-12 bg-primary text-primary-foreground font-medium rounded-full
+              hover:bg-primary/90 hover:shadow-[0_0_20px_hsl(var(--primary)/0.25)]
+              transition-all duration-300 disabled:opacity-50"
+                    >
+                        {processing ? "Odesílám..." : "Odeslat zprávu"}
+                    </motion.button>
+                )}
+            </AnimatePresence>
         </form>
     )
 }
