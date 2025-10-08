@@ -1,35 +1,43 @@
-import { Link } from '@inertiajs/react';
-import { Clock, Coffee, Facebook, Instagram, Mail, MapPin, Phone, Twitter } from 'lucide-react';
+import { Link } from "@inertiajs/react"
+import {
+    Clock,
+    Coffee,
+    Facebook,
+    Instagram,
+    Mail,
+    MapPin,
+    Phone,
+    Twitter,
+} from "lucide-react"
 
 const Footer = () => {
     const footerSections = [
         {
-            title: 'Navigace',
+            title: "Navigace",
             links: [
-                { name: 'Domů', href: '/' },
-                { name: 'Blog', href: '/blog' },
-                { name: 'Akce', href: '/akce' },
-                { name: 'O nás', href: '/o-nas' },
-                { name: 'Kontakt', href: '/kontakt' },
-            ]
+                { name: "Domů", href: "/" },
+                { name: "Blog", href: "/blog" },
+                { name: "Akce", href: "/akce" },
+                { name: "O nás", href: "/o-nas" },
+                { name: "Kontakt", href: "/kontakt" },
+            ],
         },
         {
-            title: 'Služby',
+            title: "Služby",
             links: [
-                { name: 'Menu', href: '/menu' },
-                { name: 'Rezervace', href: '/rezervace' },
-                { name: 'Catering', href: '/catering' },
-                { name: 'Firemní akce', href: '/firemni-akce' },
-                { name: 'Kurzy barista', href: '/kurzy' },
-            ]
-        }
-    ];
+                { name: "Rezervace", href: "/rezervace" },
+                { name: "Catering", href: "/catering" },
+                { name: "Firemní akce", href: "/firemni-akce" },
+                { name: "Kurzy", href: "/kurzy" },
+            ],
+        },
+    ]
 
     const socialMedia = [
-        { icon: Facebook, href: '#', name: 'Facebook' },
-        { icon: Instagram, href: '#', name: 'Instagram' },
-        { icon: Twitter, href: '#', name: 'Twitter' },
-    ];
+        { icon: Facebook, href: "#", name: "Facebook" },
+        { icon: Instagram, href: "#", name: "Instagram" },
+        { icon: Twitter, href: "#", name: "Twitter" },
+    ]
 
     return (
         <footer className="bg-card border-t border-border">
@@ -44,8 +52,9 @@ const Footer = () => {
                             </span>
                         </Link>
                         <p className="text-muted-foreground leading-relaxed mb-6">
-                            Luxusní kavárna a cukrárna v srdci města. Nabízíme prémiovou kávu,
-                            čerstvé sladkosti a nezapomenutelný zážitek v elegantním prostředí.
+                            Luxusní kavárna a cukrárna v srdci města. Nabízíme prémiovou
+                            kávu, čerstvé sladkosti a nezapomenutelný zážitek v elegantním
+                            prostředí.
                         </p>
 
                         {/* Social Media */}
@@ -93,28 +102,27 @@ const Footer = () => {
                             <div className="flex items-start space-x-3">
                                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
                                 <span className="text-muted-foreground">
-                                    Náměstí Míru 15<br />
-                                    120 00 Praha 2
+                                    Vodní, 760 01 Zlín 1
                                 </span>
                             </div>
 
                             <div className="flex items-center space-x-3">
                                 <Phone className="h-5 w-5 text-primary flex-shrink-0" />
                                 <a
-                                    href="tel:+420123456789"
+                                    href="tel:+420777661706"
                                     className="text-muted-foreground hover:text-primary transition-colors duration-300"
                                 >
-                                    +420 123 456 789
+                                    +420 777 661 706
                                 </a>
                             </div>
 
                             <div className="flex items-center space-x-3">
                                 <Mail className="h-5 w-5 text-primary flex-shrink-0" />
                                 <a
-                                    href="mailto:info@cafeluxe.cz"
+                                    href="mailto:monika.maruska@seznam.cz"
                                     className="text-muted-foreground hover:text-primary transition-colors duration-300"
                                 >
-                                    info@cafeluxe.cz
+                                    monika.maruska@seznam.cz
                                 </a>
                             </div>
 
@@ -130,11 +138,11 @@ const Footer = () => {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
+                <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
                     <p className="text-muted-foreground text-sm">
                         © 2024 U Marušky. Všechna práva vyhrazena.
                     </p>
-                    <div className="flex space-x-6 mt-4 md:mt-0">
+                    <div className="flex space-x-6">
                         <Link
                             href="/ochrana-udaju"
                             className="text-muted-foreground hover:text-primary text-sm transition-colors duration-300"
@@ -149,9 +157,24 @@ const Footer = () => {
                         </Link>
                     </div>
                 </div>
+
+                {/* Signature */}
+                <div className="mt-6 border-t border-border pt-4 text-center">
+                    <p className="text-xs text-muted-foreground">
+                        Design & development by{" "}
+                        <a
+                            href="https://masny.xyz"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-primary hover:underline hover:text-primary/80 transition-colors duration-300"
+                        >
+                            masny.xyz
+                        </a>
+                    </p>
+                </div>
             </div>
         </footer>
-    );
-};
+    )
+}
 
-export default Footer;
+export default Footer
