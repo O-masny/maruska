@@ -19,7 +19,7 @@ const ContactSection = () => {
     }, [])
 
     return (
-        <section id="contact" className="section-padding bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden">
+        <section id="contact" className="section-padding py-12 bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(var(--primary))_0%,transparent_50%),radial-gradient(circle_at_20%_80%,hsl(var(--secondary))_0%,transparent_50%)] opacity-5 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4">

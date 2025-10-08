@@ -1,8 +1,8 @@
 'use client'
 
+import { reveal } from '@/lib/scrollFx'
 import { motion } from 'framer-motion'
 import { useEffect, useRef, useState } from 'react'
-import { reveal } from '@/lib/scrollFx'
 
 interface Supplier {
     id: number
@@ -30,7 +30,7 @@ const SuppliersSlider = ({ suppliers }: SuppliersSliderProps) => {
 
     return (
         <section
-            className="section-padding bg-background overflow-hidden"
+            className="section-padding py-12 bg-background overflow-hidden"
             ref={wrapRef}
         >
             <div className="container-default text-center mb-12">

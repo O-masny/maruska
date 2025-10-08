@@ -19,7 +19,7 @@ interface BlogSectionProps {
 const BlogSection = ({ posts }: BlogSectionProps) => {
     if (!posts?.length)
         return (
-            <section className="section-padding bg-secondary/30 text-center">
+            <section className="section-padding bg-secondary/30 text-center my-6">
                 <h2 className="text-section-title mb-4 text-foreground">Blog</h2>
                 <p className="text-muted-foreground mb-6">
                     Zatím žádné články – sledujte nás, brzy přidáme čerstvou dávku inspirace ☕
@@ -35,7 +35,7 @@ const BlogSection = ({ posts }: BlogSectionProps) => {
     const post = posts[0]
 
     return (
-        <section className="relative section-padding overflow-hidden bg-secondary/30">
+        <section className="relative py-12 section-padding overflow-hidden bg-secondary/30">
             {/* Background image with parallax-style animation */}
             <motion.img
                 src={post.cover_image}

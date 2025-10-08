@@ -19,7 +19,7 @@ const AboutSection = () => {
     return (
         <section
             id="about"
-            className="section-padding relative overflow-hidden bg-gradient-to-b from-background via-secondary/10 to-background"
+            className="section-padding py-12 relative overflow-hidden bg-gradient-to-b from-background via-secondary/10 to-background"
         >
             <div className="container-default">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">

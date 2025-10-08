@@ -31,6 +31,8 @@ const Index = () => {
     return (
         <>
             <PageOverlay />
+            <SectionNavigation />
+
             <PageTransition>
                 <div className="min-h-screen page-transition">
                     <div id="pageProgress" className="fixed top-0 left-0 h-[2px] w-full bg-primary/20 z-[60]">
@@ -38,13 +40,11 @@ const Index = () => {
                     </div>
 
                     <Navigation />
-                    <SectionNavigation />
 
-                    <main className="flex flex-col space-y-12">
+                    <main className="flex flex-col ">
                         <HeroSection />
                         <AboutSection />
                         <EventsSection events={upcomingEvents} />
-
                         <BlogSection posts={latestPosts} />
                         <SuppliersSlider suppliers={suppliers} />
                         <ContactSection />
