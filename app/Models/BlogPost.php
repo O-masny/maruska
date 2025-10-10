@@ -18,10 +18,14 @@ class BlogPost extends Model
         'cover_image',
         'published_at',
         'user_id',
+        'images',      // ✅ přidáno
+
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
+        'images' => 'array'
+
     ];
 
     // Vztah k autorovi

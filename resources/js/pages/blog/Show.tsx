@@ -17,6 +17,8 @@ interface BlogPost {
     content: string
     cover_image: string
     published_at: string
+    images?: string[]
+
     author: { name: string }
 }
 
@@ -87,7 +89,6 @@ const BlogShow = () => {
                     </motion.div>
                 </div>
             </motion.section>
-
             {/* ARTICLE BODY */}
             <motion.section
                 initial="hidden"
@@ -103,6 +104,41 @@ const BlogShow = () => {
                     <div dangerouslySetInnerHTML={{ __html: data.content }} />
                 </div>
 
+                {/* 🖼️ GALLERY BLOK */}
+                {data.images && data.images.length > 0 && (
+                    <motion.section
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        viewport={{ once: true }}
+                        className="max-w-5xl mx-auto px-6 mt-20"
+                    >
+                        <h3 className="font-serif text-3xl font-bold mb-8 text-foreground text-center">
+                            Fotogalerie
+                        </h3>
+
+                        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                            {data.images.map((src: string, i: number) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, scale: 0.95 }}
+                                    whileInView={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: i * 0.05, duration: 0.5 }}
+                                    viewport={{ once: true }}
+                                    className="overflow-hidden rounded-2xl shadow-md hover:shadow-lg bg-[#1C1816]/50 border border-border/20"
+                                >
+                                    <img
+                                        src={src}
+                                        alt={`${data.title} - obrázek ${i + 1}`}
+                                        className="w-full h-64 object-cover transition-transform duration-700 hover:scale-105"
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </motion.section>
+                )}
+
+                {/* 🔙 BACK BUTTON */}
                 <div className="max-w-3xl mx-auto px-6 mt-16 flex justify-between">
                     <Link href="/blog">
                         <Button variant="outline" className="hover:bg-primary/10 transition-all">
@@ -112,6 +148,7 @@ const BlogShow = () => {
                     </Link>
                 </div>
             </motion.section>
+
 
             <Footer />
         </PageTransition>

@@ -4,7 +4,6 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-
 class BlogPostResource extends JsonResource
 {
     public function toArray(Request $request): array
@@ -21,8 +20,14 @@ class BlogPostResource extends JsonResource
             ],
             'cover_image' => $this->cover_image
                 ? asset('storage/' . $this->cover_image)
-                : asset(path: 'images/blog-placeholder.jpg'),
-            // kdybys chtěl i extra data:
+                : asset('images/blog-placeholder.jpg'),
+
+            // ✅ Nová část
+            'images' => collect($this->images)
+                ->filter() // odstraní null hodnoty
+                ->map(fn($path) => asset('storage/' . $path))
+                ->values(),
+
             'created_at' => $this->created_at?->toDateTimeString(),
             'updated_at' => $this->updated_at?->toDateTimeString(),
         ];

@@ -37,15 +37,16 @@ const AboutSection = () => {
                         </h2>
                         <p className="text-large text-muted-foreground">
                             Kavárna a Cukrárna U Marušky je místem, kde se setkává vášeň pro kávu v příjemném prostředí. Vznikla z lásky k dokonalé chuti a přání vytvořit prostor, kde se každý host cítí výjimečně.
+                            <br />  U Marušky vzniklo z přání vytvořit kavárnu, kde si každý najde to své. Od 1.dubna 2025 přinášíme atmosféru, která voní po poctivé kávě, sladkostech a dobré náladě.
+
+                            Každý den připravujeme kávu s láskou a k tomu chystáme čerstvé chlebíčky,  panini. Cukroví máme od tří dodavatelů vždy čerstvé plné lahodné chuti.
 
                         </p>
                         <p className="text-large text-muted-foreground">
                             Vychutnejte si chuť pravého Italského espressa Café Vergnano 1882.
 
                         </p>
-                        <p className="text-large text-muted-foreground">
-                            Věříme, že káva je víc než nápoj – je to rituál, klid a spojení s lidmi.
-                        </p>
+
 
                         <motion.div
                             whileHover={{ scale: 1.05 }}
@@ -86,8 +87,7 @@ const AboutSection = () => {
                             viewport={{ once: true }}
                             className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-background/80 backdrop-blur-md px-4 sm:px-5 py-2 sm:py-3 rounded-full text-xs sm:text-sm text-muted-foreground border border-border"
                         >
-                            ☕ Pečlivě pražená zrna & domácí dezerty
-                        </motion.div>
+                            Věříme, že káva je víc než nápoj – je to rituál, klid a spojení s lidmi.                        </motion.div>
                     </motion.div>
 
                 </div>

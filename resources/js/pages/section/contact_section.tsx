@@ -58,7 +58,7 @@ const ContactSection = () => {
                             {
                                 icon: <Phone className="w-6 h-6 text-primary" />,
                                 title: "Telefon",
-                                content: "+420 777 123 456",
+                                content: "+420 723 663 254 nebo +420  777 661 706, ",
                             },
                             {
                                 icon: <Mail className="w-6 h-6 text-primary" />,

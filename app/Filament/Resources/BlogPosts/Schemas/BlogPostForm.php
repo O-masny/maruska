@@ -48,7 +48,20 @@ class BlogPostForm
                         ->seconds(false),
                 ])
                 ->columns(1),
-
+            Section::make('Galerie obrázků')
+                ->description('Volitelné doplňkové fotografie k článku nebo eventu.')
+                ->schema([
+                    FileUpload::make('images')
+                        ->label('Galerie')
+                        ->multiple()                   // ✅ umožní nahrát více souborů
+                        ->reorderable()                // ✅ drag & drop pořadí
+                        ->directory('blog/gallery')    // ✅ uložení do podsložky
+                        ->disk('public')
+                        ->image()
+                        ->maxFiles(count: 5)
+                        ->imagePreviewHeight('150')
+                        ->helperText('Nahraj až 10 doplňkových obrázků (např. z akce nebo behind-the-scenes).'),
+                ]),
             Section::make('Obsah článku')
                 ->description('Perex a hlavní text článku.')
                 ->schema([
