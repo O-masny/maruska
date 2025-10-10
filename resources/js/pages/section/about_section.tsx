@@ -36,14 +36,12 @@ const AboutSection = () => {
                             O nás
                         </h2>
                         <p className="text-large text-muted-foreground">
-                            Kavárna a Cukrárna U Marušky je místem, kde se setkává vášeň pro
-                            kávu s moderním designem. Vznikla z lásky k dokonalé chuti a přání
-                            vytvořit prostor, kde se každý host cítí výjimečně.
+                            Kavárna a Cukrárna U Marušky je místem, kde se setkává vášeň pro kávu v příjemném prostředí. Vznikla z lásky k dokonalé chuti a přání vytvořit prostor, kde se každý host cítí výjimečně.
+
                         </p>
                         <p className="text-large text-muted-foreground">
-                            Používáme pouze nejkvalitnější zrna z ověřených plantáží a každou kávu
-                            připravujeme s péčí zkušených baristů. Dezerty vznikají každý den
-                            čerstvé z prémiových surovin.
+                            Vychutnejte si chuť pravého Italského espressa Café Vergnano 1882.
+
                         </p>
                         <p className="text-large text-muted-foreground">
                             Věříme, že káva je víc než nápoj – je to rituál, klid a spojení s lidmi.
@@ -73,25 +71,25 @@ const AboutSection = () => {
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1 }}
                         viewport={{ once: true }}
-                        className="relative"
+                        className="relative w-full max-w-[600px] mx-auto overflow-hidden sm:rounded-xl"
                     >
                         <img
                             src={coffeeMaking}
                             alt="Příprava kávy u Marušky"
-                            className="w-full h-96 lg:h-[520px] object-cover rounded-2xl shadow-2xl"
+                            className="w-full h-80 sm:h-96 md:h-[480px] object-cover rounded-2xl shadow-2xl"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent rounded-2xl pointer-events-none" />
-                        {/* optional overlay detail */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5, duration: 1 }}
                             viewport={{ once: true }}
-                            className="absolute bottom-6 left-6 bg-background/80 backdrop-blur-md px-5 py-3 rounded-full text-sm text-muted-foreground border border-border"
+                            className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-background/80 backdrop-blur-md px-4 sm:px-5 py-2 sm:py-3 rounded-full text-xs sm:text-sm text-muted-foreground border border-border"
                         >
                             ☕ Pečlivě pražená zrna & domácí dezerty
                         </motion.div>
                     </motion.div>
+
                 </div>
             </div>
         </section>

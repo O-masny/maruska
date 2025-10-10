@@ -9,7 +9,7 @@ import {
     Phone,
     Twitter,
 } from "lucide-react"
-
+import { OpeningHours } from "./OpeningHours"
 const Footer = () => {
     const footerSections = [
         {
@@ -101,9 +101,7 @@ const Footer = () => {
                         <div className="space-y-4">
                             <div className="flex items-start space-x-3">
                                 <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                                <span className="text-muted-foreground">
-                                    Vodní, 760 01 Zlín 1
-                                </span>
+                                <span className="text-muted-foreground">Vodní, 760 01 Zlín 1</span>
                             </div>
 
                             <div className="flex items-center space-x-3">
@@ -128,10 +126,7 @@ const Footer = () => {
 
                             <div className="flex items-start space-x-3">
                                 <Clock className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                                <div className="text-muted-foreground">
-                                    <div>Po - Pá: 7:00 - 20:00</div>
-                                    <div>So - Ne: 8:00 - 18:00</div>
-                                </div>
+                                <OpeningHours variant="footer" />
                             </div>
                         </div>
                     </div>

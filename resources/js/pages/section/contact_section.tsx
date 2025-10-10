@@ -1,12 +1,14 @@
 'use client'
 
 import { ContactMap } from "@/components/Contact/ContactMap"
+import { OpeningHours } from "@/components/OpeningHours"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { clipReveal, driftX, reveal } from "@/lib/scrollFx"
 import { Link } from "@inertiajs/react"
 import { Clock, Mail, MapPin, Phone } from "lucide-react"
 import { useEffect, useRef } from "react"
+
 
 const ContactSection = () => {
     const wrapRef = useRef<HTMLDivElement>(null)
@@ -19,14 +21,19 @@ const ContactSection = () => {
     }, [])
 
     return (
-        <section id="contact" className="section-padding py-12 bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden">
+        <section
+            id="contact"
+            className="section-padding py-12 bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden"
+        >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(var(--primary))_0%,transparent_50%),radial-gradient(circle_at_20%_80%,hsl(var(--secondary))_0%,transparent_50%)] opacity-5 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-section-title mb-6 text-foreground">Kontakt</h2>
                     <p className="text-subtitle max-w-2xl mx-auto">
-                        Navštivte nás nebo se ozvěte. Těšíme se na vás!
+                        Kavárna a cukrárna v srdci města, která nabídne prémiovou italskou kávu,
+                        čerstvé sladkosti, ročníková vína, panini, obložená prkénka a mnoho dalšího
+                        pro váš nezapomenutelný zážitek v útulném prostředí.
                     </p>
                 </div>
 
@@ -61,12 +68,7 @@ const ContactSection = () => {
                             {
                                 icon: <Clock className="w-6 h-6 text-primary" />,
                                 title: "Otevírací doba",
-                                content: (
-                                    <div className="space-y-1">
-                                        <p>Pondělí – Pátek: 7:00 – 20:00</p>
-                                        <p>Sobota – Neděle: 8:00 – 21:00</p>
-                                    </div>
-                                ),
+                                content: <OpeningHours variant="footer" />,
                             },
                         ].map((item, i) => (
                             <Card
@@ -82,7 +84,9 @@ const ContactSection = () => {
                                         <h3 className="font-display font-medium text-lg mb-2 text-foreground">
                                             {item.title}
                                         </h3>
-                                        <p className="text-muted-foreground leading-relaxed">{item.content}</p>
+                                        <div className="text-muted-foreground  leading-relaxed">
+                                            {item.content}
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -92,19 +96,18 @@ const ContactSection = () => {
                             <Button
                                 size="lg"
                                 className="w-full h-14 font-medium rounded-full bg-primary text-primary-foreground 
-               hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(0,0,0,0.15)]
-               transition-all duration-300 ease-out"
+                  hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(0,0,0,0.15)]
+                  transition-all duration-300 ease-out"
                             >
                                 Napište nám
                             </Button>
                         </Link>
-
                     </div>
 
                     <ContactMap />
                 </div>
             </div>
-        </section >
+        </section>
     )
 }
 

@@ -4,6 +4,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\EventController;
 use App\Models\BlogPost;
+use App\Models\CafeSetting;
 use App\Models\Event;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\Route;
@@ -15,6 +16,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('/', function () {
+    $settings = CafeSetting::first();
+
     // 📰 Nejnovější články
     $latestPosts = BlogPost::with('author')
         ->whereNotNull('published_at')
@@ -61,6 +64,8 @@ Route::get('/', function () {
         'latestPosts' => $latestPosts,
         'upcomingEvents' => $upcomingEvents,
         'suppliers' => $suppliers,
+        'settings' => $settings, // 👈 tady přidáš data z Filamentu
+
 
     ]);
 })->name('home');
@@ -77,7 +82,14 @@ Route::get('/akce/{event}', [EventController::class, 'show'])->name('events.show
 Route::get('/o-nas', fn() => Inertia::render('about'))->name('about');
 
 // 📞 Kontakt
-Route::get('/kontakt', fn() => Inertia::render('contact'))->name('contact');
+
+Route::get('/kontakt', function () {
+    $settings = CafeSetting::first();
+
+    return Inertia::render('contact', [
+        'settings' => $settings,
+    ]);
+})->name('contact');
 Route::post('/kontakt', [ContactController::class, 'send'])->name('contact.send');
 
 // 🗓️ Rezervace
