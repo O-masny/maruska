@@ -27,7 +27,7 @@ export const ContactForm = () => {
         const fullName = `${data.firstName || ""} ${data.lastName || ""}`.trim()
         setData("name", fullName)
 
-        post("/kontakt/send", {
+        post("/kontakt", {
             onSuccess: () => {
                 reset()
                 setAccepted(false)
