@@ -1,27 +1,23 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { MapPin, Phone, Mail, Clock } from "lucide-react"
+import { Mail, MapPin, Phone } from "lucide-react"
 
 const contactInfo = [
     {
         icon: MapPin,
         title: "Adresa",
-        details: ["Náměstí Míru 123", "120 00 Praha 2", "Česká republika"],
+        details: ["Vodní", "760 01 Zlín 1", "Česká republika"],
     },
     {
         icon: Phone,
         title: "Telefon",
-        details: ["+420 777 123 456"],
+        details: ["+420 723 663 254 nebo +420  777 661 706"],
     },
     {
         icon: Mail,
         title: "E-mail",
-        details: ["info@cafeluna.cz"],
+        details: ["monika.maruska@seznam.cz"],
     },
-    {
-        icon: Clock,
-        title: "Otevírací doba",
-        details: ["Po–Pá: 7:00–20:00", "So–Ne: 8:00–21:00"],
-    },
+
 ]
 
 export const ContactInfoBlock = () => (
