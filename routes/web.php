@@ -90,6 +90,7 @@ Route::get('/kontakt', function () {
         'settings' => $settings,
     ]);
 })->name('contact');
+
 Route::post('/kontakt', [ContactController::class, 'send'])->name('contact.send');
 
 // 🗓️ Rezervace
