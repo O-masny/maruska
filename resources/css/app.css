@@ -45,12 +45,14 @@
 @layer base {
     :root {
         /* --- LIGHT MODE --- */
-        --background: 35 20% 97%;
+        --background: 35 30% 94%;
+        /* světlejší hnědá s teplejším podtónem */
         --foreground: 25 15% 15%;
 
-        --card: 0 0% 100%;
+        --card: 35 25% 97%;
+        /* o trochu teplejší než bílá */
         --card-foreground: 25 15% 15%;
-        --card-elevated: 35 25% 95%;
+        --card-elevated: 35 25% 93%;
 
         --popover: 0 0% 100%;
         --popover-foreground: 25 15% 15%;
@@ -61,21 +63,23 @@
         --primary-dark: 0 70% 35%;
         --primary-foreground: 0 0% 100%;
 
-        /* Cappuccino akcent */
-        --secondary: 35 50% 65%;
+        /* Cappuccino akcent – více do mléčné karamelové */
+        --secondary: 35 45% 70%;
         --secondary-foreground: 25 15% 15%;
 
         /* Teplé neutrály */
-        --muted: 25 10% 92%;
+        --muted: 30 20% 88%;
+        /* dřív 25 10% 92% → víc syté a hřejivé */
         --muted-foreground: 25 10% 45%;
-        --accent: 15 25% 85%;
+        --accent: 28 25% 82%;
+        /* lehký caramel */
         --accent-foreground: 25 15% 15%;
 
         --destructive: 0 70% 50%;
         --destructive-foreground: 0 0% 100%;
 
-        --border: 25 15% 85%;
-        --input: 25 15% 85%;
+        --border: 25 15% 80%;
+        --input: 25 15% 80%;
         --ring: 0 65% 48%;
 
         --radius: 0.75rem;
@@ -96,10 +100,10 @@
         --transition-elegant: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 
         /* Sidebar */
-        --sidebar-background: 0 0% 98%;
-        --sidebar-foreground: 240 5.3% 26.1%;
-        --sidebar-border: 220 13% 91%;
-        --sidebar-ring: 217.2 91.2% 59.8%;
+        --sidebar-background: 35 25% 95%;
+        --sidebar-foreground: 25 15% 20%;
+        --sidebar-border: 25 15% 85%;
+        --sidebar-ring: 0 65% 48%;
     }
 
     .dark {
