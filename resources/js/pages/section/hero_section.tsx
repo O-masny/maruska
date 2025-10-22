@@ -50,7 +50,7 @@ const HeroSection = () => {
                 </h1>
 
                 <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-2xl mx-auto">
-                    Vychutnejte si kávu a dezerty v moderní atmosféře naší kavárny
+                    Vychutnejte si kávu, dezerty nebo v příjemné atmosféře naší kavárny
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

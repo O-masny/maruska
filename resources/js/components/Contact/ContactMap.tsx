@@ -8,9 +8,14 @@ export const ContactMap = () => {
 
     return (
         <div
-            className="relative aspect-square lg:aspect-[16/7] rounded-2xl overflow-hidden shadow-elegant border border-border"
+            className="
+    relative aspect-square 
+    lg:aspect-auto lg:h-[420px] xl:h-[480px]
+    rounded-2xl overflow-hidden shadow-elegant border border-border
+  "
             onClick={() => setInteractive(true)}
         >
+
             {/* Google Map iframe — adresa: Vodní, 760 01 Zlín */}
             <iframe
                 title="Mapa - Kavárna U Marušky"

@@ -19,7 +19,7 @@ const AboutSection = () => {
     return (
         <section
             id="about"
-            className="section-padding py-12 relative overflow-hidden bg-gradient-to-b from-background via-secondary/10 to-background"
+            className="section-padding py-36 relative overflow-hidden bg-gradient-to-b from-background via-secondary/10 to-background"
         >
             <div className="container-default">
                 <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -35,7 +35,7 @@ const AboutSection = () => {
                         <h2 className="text-section-title mb-4 text-foreground">
                             O nás
                         </h2>
-                        <p className="text-large text-muted-foreground">
+                        <p className="text-lg sm:text-xl text-muted-foreground">
                             Kavárna a Cukrárna U Marušky je místem, kde se setkává vášeň pro kávu v příjemném prostředí. Vznikla z lásky k dokonalé chuti a přání vytvořit prostor, kde se každý host cítí výjimečně.
                             <br />  U Marušky vzniklo z přání vytvořit kavárnu, kde si každý najde to své. Od 1.dubna 2025 přinášíme atmosféru, která voní po poctivé kávě, sladkostech a dobré náladě.
 

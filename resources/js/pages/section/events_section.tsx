@@ -29,7 +29,7 @@ const EventsSection = ({ events }: EventsSectionProps) => {
 
     if (!events?.length)
         return (
-            <section className="section-padding py-6  bg-background text-center">
+            <section className="section-padding py-48  bg-background text-center">
                 <h2 className="text-section-title mb-4">Akce</h2>
                 <p className="text-muted-foreground">
                     Momentálně nejsou naplánované žádné události.
@@ -38,7 +38,7 @@ const EventsSection = ({ events }: EventsSectionProps) => {
         )
 
     return (
-        <section className="section-padding py-12  bg-background relative overflow-hidden">
+        <section className="section-padding py-24  bg-background relative overflow-hidden">
             {/* Subtle gradient overlay for cinematic depth */}
             <div className="absolute inset-0 bg-gradient-to-b from-background via-background/95 to-background pointer-events-none" />
 

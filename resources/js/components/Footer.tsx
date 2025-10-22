@@ -52,7 +52,7 @@ const Footer = () => {
                             </span>
                         </Link>
                         <p className="text-muted-foreground leading-relaxed mb-6">
-                            Luxusní kavárna a cukrárna v srdci města. Nabízíme prémiovou
+                            Útulná Pet-Friendly kavárna a cukrárna v srdci města. Nabízíme prémiovou
                             kávu, čerstvé sladkosti a nezapomenutelný zážitek v elegantním
                             prostředí.
                         </p>

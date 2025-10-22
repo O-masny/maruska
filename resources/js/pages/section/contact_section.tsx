@@ -23,23 +23,19 @@ const ContactSection = () => {
     return (
         <section
             id="contact"
-            className="section-padding py-12 bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden"
+            className="section-padding py-24 bg-gradient-to-b from-secondary/30 to-background relative overflow-hidden"
         >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,hsl(var(--primary))_0%,transparent_50%),radial-gradient(circle_at_20%_80%,hsl(var(--secondary))_0%,transparent_50%)] opacity-5 pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4">
                 <div className="text-center mb-16">
                     <h2 className="text-section-title mb-6 text-foreground">Kontakt</h2>
-                    <p className="text-subtitle max-w-2xl mx-auto">
-                        Kavárna a cukrárna v srdci města, která nabídne prémiovou italskou kávu,
-                        čerstvé sladkosti, ročníková vína, panini, obložená prkénka a mnoho dalšího
-                        pro váš nezapomenutelný zážitek v útulném prostředí.
-                    </p>
+
                 </div>
 
                 <div ref={wrapRef} className="grid lg:grid-cols-2 gap-12">
                     {/* Info Cards */}
-                    <div className="space-y-6">
+                    <div className="space-y-6 text-lg sm:text-xl">
                         {[
                             {
                                 icon: <MapPin className="w-6 h-6 text-primary" />,
