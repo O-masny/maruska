@@ -9,13 +9,15 @@ export const ContactMap = () => {
     return (
         <div
             className="
-    relative aspect-square 
-    lg:aspect-auto lg:h-[420px] xl:h-[480px]
-    rounded-2xl overflow-hidden shadow-elegant border border-border
-  "
+                relative aspect-[4/3]
+                md:aspect-auto md:h-[400px] lg:h-[440px] xl:h-[480px]
+                rounded-3xl overflow-hidden
+                shadow-[0_10px_30px_hsl(25_20%_20%/0.2)]
+                border border-border
+                mx-auto w-full
+            "
             onClick={() => setInteractive(true)}
         >
-
             {/* Google Map iframe — adresa: Vodní, 760 01 Zlín */}
             <iframe
                 title="Mapa - Kavárna U Marušky"
@@ -25,7 +27,7 @@ export const ContactMap = () => {
                 style={{
                     border: 0,
                     pointerEvents: interactive ? "auto" : "none",
-                    filter: interactive ? "none" : "grayscale(30%)",
+                    filter: interactive ? "none" : "grayscale(25%) brightness(95%)",
                     transition: "filter 0.3s ease",
                 }}
                 loading="lazy"
@@ -33,17 +35,20 @@ export const ContactMap = () => {
                 referrerPolicy="no-referrer-when-downgrade"
             />
 
-            {/* Overlay s adresou */}
-            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-background/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-3 shadow-elegant border border-border">
+            {/* Adresní overlay */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 bg-background/80 backdrop-blur-md rounded-full px-6 py-3 flex items-center gap-3 shadow-md border border-border text-sm sm:text-base">
                 <MapPin className="h-5 w-5 text-primary" />
-                <span className="text-sm font-medium text-foreground">
-                    Vodní, 760 01 Zlín 1
-                </span>
+                <span className="font-medium text-foreground">Vodní 23, Zlín 1</span>
             </div>
 
-            {/* Overlay kliknutím aktivuj mapu */}
+            {/* Kliknutím aktivuj mapu */}
             {!interactive && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/10 backdrop-blur-[1px] text-foreground text-sm cursor-pointer transition-all duration-300 hover:bg-black/20">
+                <div className="
+                    absolute inset-0 flex items-center justify-center
+                    bg-black/10 backdrop-blur-[1px]
+                    text-foreground text-sm cursor-pointer
+                    transition-all duration-300 hover:bg-black/20
+                ">
                     Kliknutím aktivujete mapu
                 </div>
             )}

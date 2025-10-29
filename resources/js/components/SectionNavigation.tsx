@@ -10,9 +10,7 @@ const SectionNavigation = () => {
     const [sections, setSections] = useState<HTMLElement[]>([]);
 
     useEffect(() => {
-        const sectionElements = Array.from(
-            document.querySelectorAll("section")
-        ) as HTMLElement[];
+        const sectionElements = Array.from(document.querySelectorAll("section")) as HTMLElement[];
         setSections(sectionElements);
 
         const observer = new IntersectionObserver(
@@ -33,10 +31,7 @@ const SectionNavigation = () => {
 
     const scrollToSection = (index: number) => {
         if (sections[index]) {
-            sections[index].scrollIntoView({
-                behavior: "smooth",
-                block: "start",
-            });
+            sections[index].scrollIntoView({ behavior: "smooth", block: "start" });
         }
     };
 
@@ -45,42 +40,51 @@ const SectionNavigation = () => {
     return (
         <>
             {/* Desktop side nav */}
-            <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col space-y-3">
-                <Button
-                    size="icon"
-                    variant="outline"
+            <div className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 z-40 flex-col space-y-4">
+                <motion.button
                     disabled={currentSection === 0}
                     onClick={() => scrollToSection(currentSection - 1)}
-                    className="w-12 h-12 rounded-full backdrop-blur-md"
+                    className="p-3 rounded-full bg-background/70 border border-border/60 shadow-md backdrop-blur-md transition hover:bg-primary/10 disabled:opacity-40"
+                    whileTap={{ scale: 0.9 }}
                 >
                     <ChevronUp className="h-5 w-5" />
-                </Button>
+                </motion.button>
 
                 <div className="flex flex-col items-center space-y-2">
                     {sections.map((_, index) => (
                         <motion.button
                             key={index}
                             onClick={() => scrollToSection(index)}
-                            className="w-2 h-6 rounded-full bg-border"
+                            className="relative w-2 h-6 rounded-full cursor-pointer transition"
                             animate={{
                                 backgroundColor:
-                                    index === currentSection ? "hsl(var(--primary))" : "hsl(var(--border))",
-                                scale: index === currentSection ? 1.2 : 1,
+                                    index === currentSection
+                                        ? "hsl(var(--primary))"
+                                        : "hsl(var(--muted-foreground)/0.5)",
+                                scale: index === currentSection ? 1.3 : 1,
                             }}
-                            transition={{ duration: 0.3 }}
-                        />
+                            whileHover={{ scale: 1.4, backgroundColor: "hsl(var(--primary)/0.6)" }}
+                            transition={{ duration: 0.25 }}
+                        >
+                            {index === currentSection && (
+                                <motion.span
+                                    layoutId="activeSection"
+                                    className="absolute inset-0 rounded-full border-2 border-primary/60"
+                                    transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                                />
+                            )}
+                        </motion.button>
                     ))}
                 </div>
 
-                <Button
-                    size="icon"
-                    variant="outline"
+                <motion.button
                     disabled={currentSection === sections.length - 1}
                     onClick={() => scrollToSection(currentSection + 1)}
-                    className="w-12 h-12 rounded-full backdrop-blur-md"
+                    className="p-3 rounded-full bg-background/70 border border-border/60 shadow-md backdrop-blur-md transition hover:bg-primary/10 disabled:opacity-40"
+                    whileTap={{ scale: 0.9 }}
                 >
                     <ChevronDown className="h-5 w-5" />
-                </Button>
+                </motion.button>
             </div>
 
             {/* Mobile/Tablet bottom nav */}
@@ -91,23 +95,26 @@ const SectionNavigation = () => {
                         variant="ghost"
                         disabled={currentSection === 0}
                         onClick={() => scrollToSection(currentSection - 1)}
+                        className="disabled:opacity-40"
                     >
                         <ChevronUp className="h-5 w-5" />
                     </Button>
 
-                    <div className="flex space-x-2">
+                    <div className="flex space-x-3">
                         {sections.map((_, index) => (
                             <motion.div
                                 key={index}
                                 onClick={() => scrollToSection(index)}
-                                className="w-2 h-2 rounded-full cursor-pointer"
+                                className="cursor-pointer rounded-full"
                                 animate={{
+                                    width: index === currentSection ? 12 : 8,
+                                    height: index === currentSection ? 12 : 8,
                                     backgroundColor:
                                         index === currentSection
                                             ? "hsl(var(--primary))"
-                                            : "hsl(var(--muted-foreground))",
-                                    scale: index === currentSection ? 1.4 : 1,
+                                            : "hsl(var(--muted-foreground)/0.5)",
                                 }}
+                                whileHover={{ scale: 1.3 }}
                                 transition={{ duration: 0.3 }}
                             />
                         ))}
@@ -118,6 +125,7 @@ const SectionNavigation = () => {
                         variant="ghost"
                         disabled={currentSection === sections.length - 1}
                         onClick={() => scrollToSection(currentSection + 1)}
+                        className="disabled:opacity-40"
                     >
                         <ChevronDown className="h-5 w-5" />
                     </Button>

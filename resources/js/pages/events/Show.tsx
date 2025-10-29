@@ -1,10 +1,10 @@
 'use client'
 
+import CoffeeButton from '@/components/CoffeeButton'
 import Footer from '@/components/Footer'
 import Navigation from '@/components/Navigation'
 import PageTransition from '@/components/PageTransition'
-import { Button } from '@/components/ui/button'
-import { destroyLenis, initLenis,  } from '@/lib/scrollFx'
+import { destroyLenis, initLenis } from '@/lib/scrollFx'
 import { Link, usePage } from '@inertiajs/react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ArrowLeft, Calendar, Clock, MapPin, Users } from 'lucide-react'
@@ -34,16 +34,16 @@ const EventShow = () => {
         offset: ['start start', 'end start'],
     })
     const y = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
-    const blur = useTransform(scrollYProgress, [0, 1], ['0px', '6px'])
-    const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.7])
+    const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.75])
 
     useEffect(() => {
         initLenis()
         return () => destroyLenis()
     }, [])
+
     return (
         <PageTransition>
-            <div className="min-h-screen bg-background">
+            <div className="min-h-screen bg-background text-foreground">
                 <Navigation />
 
                 {/* HERO SECTION */}
@@ -54,13 +54,13 @@ const EventShow = () => {
                     <motion.img
                         src={event.cover_image}
                         alt={event.title}
-                        style={{
-                            y,
-                            opacity,
-                            filter: blur && `blur(${blur.get()})`, // ❌ špatně — nedynamické
-                        }} className="absolute inset-0 w-full h-full object-cover"
+                        style={{ y, opacity }}
+                        transition={{ duration: 1.2, ease: 'easeOut' }}
+                        className="absolute inset-0 w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-background/90" />
+
+                    {/* Espresso overlay + teplý gradient */}
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(var(--foreground)/0.65)_0%,hsl(var(--background)/0.9)_100%)]" />
 
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
@@ -115,7 +115,7 @@ const EventShow = () => {
                                 <motion.div
                                     key={i}
                                     variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}
-                                    className="flex items-center gap-3 bg-card/60 rounded-xl p-4 shadow-sm border border-border/60 backdrop-blur-sm"
+                                    className="flex items-center gap-3 bg-card/70 rounded-xl p-4 shadow-card border border-border backdrop-blur-sm"
                                 >
                                     <Icon className="h-5 w-5 text-primary" />
                                     <span>{label}</span>
@@ -125,7 +125,7 @@ const EventShow = () => {
 
                         {/* Popis */}
                         <motion.div
-                            className="text-lg leading-relaxed text-foreground bg-card/50 p-8 rounded-2xl border border-border/50 shadow-md backdrop-blur-sm"
+                            className="text-lg leading-relaxed text-foreground bg-card/50 p-8 rounded-2xl border border-border shadow-elegant backdrop-blur-sm"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -136,26 +136,26 @@ const EventShow = () => {
 
                         {/* CTA Buttons */}
                         <motion.div
-                            className="flex justify-between items-center pt-4"
+                            className="flex flex-col sm:flex-row justify-between items-center gap-6 pt-6"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.6 }}
                         >
                             <Link href="/akce">
-                                <Button variant="outline" className="group">
-                                    <ArrowLeft className="mr-2 h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                                <CoffeeButton variant="outline" size="md" className="min-w-[200px]">
+                                    <ArrowLeft className="mr-2 h-4 w-4" />
                                     Zpět na přehled
-                                </Button>
+                                </CoffeeButton>
                             </Link>
 
-                            <Button
-                                className="bg-gradient-primary text-white hover:shadow-luxury hover:scale-105 transition-transform duration-300"
-                            >
-                                {event.price > 0
-                                    ? `Rezervovat (${event.price} Kč)`
-                                    : 'Rezervovat zdarma'}
-                            </Button>
+                            <Link href="/kontakt">
+                                <CoffeeButton variant="solid" size="md" className="min-w-[240px]">
+                                    {event.price > 0
+                                        ? `Rezervovat (${event.price} Kč)`
+                                        : 'Rezervovat zdarma'}
+                                </CoffeeButton>
+                            </Link>
                         </motion.div>
                     </div>
                 </motion.section>

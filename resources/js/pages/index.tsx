@@ -14,6 +14,7 @@ import BlogSection from './section/blog_section'
 import ContactSection from './section/contact_section'
 import EventsSection from './section/events_section'
 import HeroSection from './section/hero_section'
+import PetSection from './section/pet_section'
 
 const Index = () => {
     const { latestPosts, upcomingEvents, suppliers } = usePage().props as unknown as {
@@ -45,6 +46,7 @@ const Index = () => {
                         <HeroSection />
                         <AboutSection />
                         <EventsSection events={upcomingEvents} />
+                        <PetSection />
                         <BlogSection posts={latestPosts} />
                         <SuppliersSlider suppliers={suppliers} />
                         <ContactSection />
