@@ -29,7 +29,7 @@ const SuppliersSlider = ({ suppliers }: SuppliersSliderProps) => {
     const duplicated = [...suppliers, ...suppliers]
 
     return (
-        <section
+        <section id="suppliers"
             className="section-padding py-12 bg-background overflow-hidden"
             ref={wrapRef}
         >

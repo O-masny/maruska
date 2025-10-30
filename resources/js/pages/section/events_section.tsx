@@ -29,7 +29,7 @@ const EventsSection = ({ events }: EventsSectionProps) => {
 
     if (!events?.length)
         return (
-            <section className="section-padding py-48 bg-background text-center relative overflow-hidden">
+            <section id="events" className="section-padding py-48 bg-background text-center relative overflow-hidden">
                 <div className="container-default">
                     <h2 className="text-section-title mb-4 text-foreground">Akce</h2>
                     <p className="text-muted-foreground">

@@ -30,9 +30,15 @@ const SectionNavigation = () => {
     }, []);
 
     const scrollToSection = (index: number) => {
-        if (sections[index]) {
-            sections[index].scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        const section = sections[index];
+        if (!section) return;
+
+        const offsetTop = section.offsetTop;
+
+        window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth',
+        });
     };
 
     if (sections.length <= 1) return null;

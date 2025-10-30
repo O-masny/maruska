@@ -19,7 +19,7 @@ interface BlogSectionProps {
 const BlogSection = ({ posts }: BlogSectionProps) => {
     if (!posts?.length)
         return (
-            <section
+            <section id="blog"
                 className="
       relative py-32 text-center overflow-hidden
       bg-[linear-gradient(180deg,
@@ -29,9 +29,8 @@ const BlogSection = ({ posts }: BlogSectionProps) => {
       ]
     "
             >
-
                 {/* Obsah */}
-                <div className="relative container-default max-w-lg mx-auto px-6">
+                <div id="blog" className="relative container-default max-w-lg mx-auto px-6">
                     <h2 className="text-section-title mb-4 text-[hsl(25_20%_25%)] font-serif">
                         Blog
                     </h2>

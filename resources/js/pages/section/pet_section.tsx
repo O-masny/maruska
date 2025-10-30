@@ -29,7 +29,8 @@ const PetSection = () => {
             {/* Ambientní světelný přechod pro hloubku */}
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_20%,hsl(0_0%_100%/0.25),transparent_60%)]" />
 
-            <div className="container-default relative z-10">
+            <div id="pet"
+                className="container-default relative z-10">
                 <motion.div
                     ref={textRef}
                     initial={{ opacity: 0, y: 40 }}
