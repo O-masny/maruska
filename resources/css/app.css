@@ -303,4 +303,8 @@
             transform: translateY(0) scale(1);
         }
     }
+
+    .text-primary {
+        color: hsl(10 60% 45%) !important;
+    }
 }

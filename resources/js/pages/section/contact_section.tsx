@@ -48,7 +48,7 @@ const ContactSection = () => {
                         Kontaktujte nás
                     </h2>
                     <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-                        Zastavte se na kávu nebo nám napište — rádi odpovíme na každý váš dotaz.
+                        Zastavte se na kávu a nebo nám napište — rádi odpovíme na každý váš dotaz.
                     </p>
                 </motion.div>
 

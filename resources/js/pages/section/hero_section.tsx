@@ -29,7 +29,7 @@ const HeroSection = () => {
     }
 
     return (
-        <section 
+        <section
             id="hero"
             ref={ref}
             className="
@@ -67,11 +67,13 @@ const HeroSection = () => {
                 transition={{ duration: 1, ease: 'easeOut' }}
                 className="relative z-10 text-center text-white px-6 max-w-5xl mx-auto"
             >
-                <h1 className="text-6xl sm:text-7xl font-semibold tracking-tight mb-6">
-                    U <span className="text-primary">Marušky</span>
+                <h1
+                    className="text-6xl sm:text-7xl font-semibold tracking-tight mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.45)]"
+                >
+                    U <span className="text-primary drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">Marušky</span>
                 </h1>
                 <p className="text-lg sm:text-xl text-white/80 mb-12 max-w-2xl mx-auto">
-                    Vychutnejte si kávu, dezerty nebo v příjemné atmosféře naší kavárny
+                    Vychutnejte si kávu, dezerty nebo slané dobroty - v příjemné atmosféře naší kavárny
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
@@ -97,23 +99,7 @@ const HeroSection = () => {
                 </div>
             </motion.div>
 
-            {/* Logo blur */}
-            {!isMobile && (
-                <motion.img
-                    src="/favicon.svg"
-                    alt="blurred logo"
-                    style={{ y }}
-                    animate={{ opacity: [0.25, 0.4, 0.25] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                    className="
-            absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%]
-            w-[70vw] max-w-[600px]
-            opacity-30 blur-xl
-            drop-shadow-[0_0_40px_rgba(255,255,255,0.25)]
-            pointer-events-none select-none
-          "
-                />
-            )}
+
 
             {/* Scroll indicator */}
             <motion.div
