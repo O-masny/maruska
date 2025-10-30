@@ -95,28 +95,42 @@ export function destroyLenis() {
     _lenis = null
     ScrollTrigger.getAll().forEach((st) => st.kill())
 }
-
-/** ---------- Core efekty ---------- */
 export function reveal(container: Element | string, opts: RevealOpts = {}) {
     const el = typeof container === "string" ? document.querySelector(container)! : container
     if (!el) return
     const { y = 40, duration = 0.8, stagger = 0.12, start = "top 85%" } = opts
     const targets = Array.from(el.children) as HTMLElement[]
+
+    const isTouch =
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia('(pointer: coarse)').matches
+
+    // 💡 Fix 1: na mobilech vůbec neskrývat text
+    if (isTouch) {
+        gsap.set(targets, { opacity: 1, y: 0 })
+        return
+    }
+
+    // Desktop-only animace
     gsap.set(targets, { opacity: 0, y })
 
     gsap.to(targets, {
         opacity: 1,
         y: 0,
         duration,
-        ease: "power3.out",
+        ease: 'power3.out',
         stagger,
         scrollTrigger: {
             trigger: el,
             start,
-            toggleActions: "play reverse play reverse", // místo once
+            toggleActions: 'play reverse play reverse',
         },
+        // 💡 Fix 2: po vytvoření vždy refreshni ScrollTrigger
+        onComplete: () => ScrollTrigger.refresh(),
     })
 }
+
 
 
 export function parallax(target: Element | string, opts: ParallaxOpts = {}) {

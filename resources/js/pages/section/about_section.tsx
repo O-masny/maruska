@@ -12,11 +12,26 @@ const AboutSection = () => {
     const imgWrapRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (textRef.current) reveal(textRef.current, { y: 28, stagger: 0.1 })
+        const textEl = textRef.current
+        const imgWrap = imgWrapRef.current
 
-        // 🔥 Parallax aplikuje jen na IMG, ne na wrapper
-        if (imgWrapRef.current) {
-            const img = imgWrapRef.current.querySelector('img')
+        // iOS fallback: zajistit viditelnost textu před animací
+        if (textEl) {
+            textEl.style.opacity = '1'
+            textEl.style.transform = 'none'
+        }
+
+        // Reveal animace (GSAP)
+        try {
+            if (textEl) reveal(textEl, { y: 28, stagger: 0.1 })
+        } catch (e) {
+            console.warn('Reveal animation skipped:', e)
+        }
+
+        // Parallax – pouze desktop
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
+        if (!isTouch && imgWrap) {
+            const img = imgWrap.querySelector('img')
             if (img) parallax(img, { yPercent: 18, scrub: 0.5 })
         }
     }, [])
@@ -25,13 +40,13 @@ const AboutSection = () => {
         <section
             id="about"
             className="
-        relative overflow-hidden py-28 sm:py-32
-        bg-[linear-gradient(180deg,
-          hsl(30_25%_90%) 0%,
-          hsl(28_20%_85%) 50%,
-          hsl(25_15%_80%) 100%
-        )]
-      "
+                relative py-28 sm:py-32
+                bg-[linear-gradient(180deg,
+                  hsl(30_25%_90%)_0%,
+                  hsl(28_20%_85%)_50%,
+                  hsl(25_15%_80%)_100%)
+                ]
+            "
         >
             {/* světelný gradient overlay */}
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_10%,hsl(0_0%_100%/0.18),transparent_60%)]" />
@@ -39,21 +54,24 @@ const AboutSection = () => {
             <div className="container-default">
                 <div
                     className="
-            grid
-            lg:grid-cols-2
-            gap-y-16 lg:gap-x-20 xl:gap-x-28
-            items-center
-            text-center lg:text-left
-          "
+                        grid
+                        lg:grid-cols-2
+                        gap-y-16 lg:gap-x-20 xl:gap-x-28
+                        items-center
+                        text-center lg:text-left
+                    "
                 >
                     {/* --- TEXT --- */}
-                    <motion.div
+                    <div
                         ref={textRef}
-                        initial={{ opacity: 0, x: -40 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="space-y-8 max-w-2xl mx-auto lg:mx-0"
+                        className="
+                            space-y-8
+                            max-w-2xl
+                            mx-auto lg:mx-0
+                            transform-gpu
+                            opacity-100
+                            will-change-[opacity,transform]
+                        "
                     >
                         <h2 className="text-section-title mb-4 font-serif text-foreground">
                             O nás
@@ -72,7 +90,7 @@ const AboutSection = () => {
                         </p>
 
                         <p className="text-base sm:text-lg italic text-muted-foreground/90">
-                            Vychutnejte si chuť pravého italského espressa Café Vergnano 1882.
+                            Vychutnejte si chuť pravé
                         </p>
 
                         <motion.div
@@ -84,73 +102,55 @@ const AboutSection = () => {
                                 <Button
                                     size="lg"
                                     className="
-                    rounded-full px-10 py-5
-                    bg-gradient-to-r from-[hsl(10_60%_45%)] to-[hsl(10_55%_35%)]
-                    text-white shadow-md hover:shadow-lg hover:scale-[1.02]
-                    transition-all duration-300
-                  "
+                                        rounded-full px-10 py-5
+                                        bg-gradient-to-r from-[hsl(10_60%_45%)] to-[hsl(10_55%_35%)]
+                                        text-white shadow-md hover:shadow-lg hover:scale-[1.02]
+                                        transition-all duration-300
+                                    "
                                 >
                                     Více o nás
                                 </Button>
                             </Link>
                         </motion.div>
-                    </motion.div>
+                    </div>
 
                     {/* --- IMAGE --- */}
-                    <motion.div
+                    <div
                         ref={imgWrapRef}
-                        initial={{ opacity: 0, x: 40 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 1 }}
-                        viewport={{ once: true }}
                         className="
-              relative
-              w-full
-              max-w-[600px]
-              mx-auto
-              overflow-hidden
-              sm:rounded-2xl
-              transform-gpu
-              will-change-transform
-              origin-center
-            "
+                            relative w-full max-w-[600px] mx-auto
+                            overflow-hidden sm:rounded-2xl
+                        "
                     >
                         <img
                             src={coffeeMaking}
                             alt="Příprava kávy u Marušky"
                             className="
-                w-full
-                h-64 sm:h-80 md:h-[480px]
-                object-cover object-center
-                rounded-2xl
-                shadow-2xl
-                will-change-transform
-                transform-gpu
-                origin-center
-              "
+                                w-full h-64 sm:h-80 md:h-[480px]
+                                object-cover object-center
+                                rounded-2xl shadow-2xl
+                                transform-gpu will-change-transform
+                            "
                         />
-
-                        {/* Espresso overlay */}
-                        <div className="absolute inset-0 pointer-events-none" />
 
                         {/* Caption */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.4, duration: 1 }}
-                            viewport={{ once: true }}
+                            transition={{ delay: 0.3, duration: 0.8 }}
+                            viewport={{ once: true, amount: 0.3 }}
                             className="
-                absolute bottom-5 left-1/2 -translate-x-1/2
-                sm:bottom-6 sm:left-6 sm:translate-x-0
-                bg-background/70 backdrop-blur-sm shadow-inner
-                px-4 sm:px-5 py-2 sm:py-3 rounded-full
-                text-xs sm:text-sm text-muted-foreground border border-border
-                text-center
-              "
+                                absolute bottom-5 left-1/2 -translate-x-1/2
+                                sm:bottom-6 sm:left-6 sm:translate-x-0
+                                bg-background/70 backdrop-blur-sm shadow-inner
+                                px-4 sm:px-5 py-2 sm:py-3 rounded-full
+                                text-xs sm:text-sm text-muted-foreground border border-border
+                                text-center
+                            "
                         >
                             Vychutnejte si kávu a dezerty v příjemné atmosféře naší kavárny
                         </motion.div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>
