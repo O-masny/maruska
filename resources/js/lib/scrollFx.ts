@@ -42,7 +42,23 @@ let _lenis: Lenis | null = null
 let _rafId: number | null = null
 
 export function initLenis(options?: ConstructorParameters<typeof Lenis>[0]) {
+    // detekce touch / small devices
+    const isTouch =
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia('(pointer: coarse)').matches
+    const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches
+    const enableLenis = !isTouch && !isSmallScreen
+
+    if (!enableLenis) {
+        console.info('[Lenis] Disabled – using native scroll')
+        ScrollTrigger.scrollerProxy(document.documentElement, {}) // čistý reset
+        ScrollTrigger.refresh()
+        return null
+    }
+
     if (_lenis) return _lenis
+
     _lenis = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -65,8 +81,12 @@ export function initLenis(options?: ConstructorParameters<typeof Lenis>[0]) {
         },
     })
 
+    ScrollTrigger.refresh()
+    console.info('[Lenis] Enabled (desktop smooth scroll)')
     return _lenis
 }
+
+
 
 export function destroyLenis() {
     if (_rafId) cancelAnimationFrame(_rafId)

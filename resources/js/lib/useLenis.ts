@@ -7,20 +7,35 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const useLenis = () => {
     useEffect(() => {
+        const isTouchDevice =
+            "ontouchstart" in window ||
+            navigator.maxTouchPoints > 0 ||
+            window.matchMedia("(pointer: coarse)").matches;
+
+        const isSmallScreen = window.matchMedia("(max-width: 1024px)").matches;
+        const enableLenis = !isTouchDevice && !isSmallScreen;
+
+        if (!enableLenis) {
+            // Native scroll fallback
+            document.documentElement.style.scrollBehavior = "smooth";
+            return; // nic nespouštíme
+        }
+
+        // --- LENIS INIT ---
         const lenis = new Lenis({
-            duration: 1.6, // delší => hladší
-            easing: (t: number) =>
-                1 - Math.pow(1 - t, 3), // cubic-out, měkčí a přirozený
+            duration: 1.6,
+            easing: (t: number) => 1 - Math.pow(1 - t, 3),
             smoothWheel: true,
-            touchMultiplier: 1.5, // lepší reakce na touch
+            touchMultiplier: 1.5,
         });
 
-        // GSAP <-> Lenis sync
+        // GSAP sync
         lenis.on("scroll", ScrollTrigger.update);
         gsap.ticker.add((time) => lenis.raf(time * 1000));
 
-        // Lazy-refresh ScrollTrigger (ne každým frame)
-        ScrollTrigger.config({ autoRefreshEvents: "visibilitychange,DOMContentLoaded,load" });
+        ScrollTrigger.config({
+            autoRefreshEvents: "visibilitychange,DOMContentLoaded,load",
+        });
 
         // Parallax efekt
         const parallaxEls = document.querySelectorAll<HTMLElement>("[data-parallax]");
@@ -55,6 +70,7 @@ export const useLenis = () => {
             );
         });
 
+        // Cleanup
         return () => {
             gsap.ticker.remove((time) => lenis.raf(time * 1000));
             lenis.destroy();
