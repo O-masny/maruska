@@ -55,8 +55,8 @@ class ContactMessage extends Mailable implements ShouldQueue
 
             $sendSmtpEmail = new SendSmtpEmail([
                 'sender' => [
-                    'name' => 'amatelier',
-                    'email' => 'noreply@umarusky.cz', // tvůj ověřený sender v Brevo
+                    'name' => 'U Marusky',
+                    'email' => 'noreply@umaruskyzlin.cz', // tvůj ověřený sender v Brevo
                 ],
                 'to' => [
                     ['email' => config('mail.contact_to')],
