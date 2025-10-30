@@ -33,13 +33,13 @@ const SectionNavigation = () => {
         const section = sections[index];
         if (!section) return;
 
-        const offsetTop = section.offsetTop;
-
-        window.scrollTo({
-            top: offsetTop,
+        // ✅ použij scrollIntoView — funguje spolehlivě i na iPhonu
+        section.scrollIntoView({
             behavior: 'smooth',
+            block: 'start',
         });
     };
+
 
     if (sections.length <= 1) return null;
 
