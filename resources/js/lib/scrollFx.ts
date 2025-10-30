@@ -33,71 +33,90 @@ const toArray = (targets: Targets): HTMLElement[] => {
         return Array.from(document.querySelectorAll<HTMLElement>(targets))
     }
     if (targets instanceof Element) return [targets as HTMLElement]
-    // NodeList, Array, Iterable
     return Array.from(targets as Iterable<Element>) as HTMLElement[]
 }
 
 /** ---------- Lenis lifecycle ---------- */
+
 let _lenis: Lenis | null = null
-let _rafId: number | null = null
 
 export function initLenis(options?: ConstructorParameters<typeof Lenis>[0]) {
-    // detekce touch / small devices
-    const isTouch =
-        'ontouchstart' in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.matchMedia('(pointer: coarse)').matches
+    const isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches
     const isSmallScreen = window.matchMedia('(max-width: 1024px)').matches
-    const enableLenis = !isTouch && !isSmallScreen
+    const forceEnable = window.location.hash.includes('force-lenis')
+    const enableLenis = forceEnable || (!isTouch && !isSmallScreen)
 
     if (!enableLenis) {
-        console.info('[Lenis] Disabled – using native scroll')
-        ScrollTrigger.scrollerProxy(document.documentElement, {}) // čistý reset
-        ScrollTrigger.refresh()
+        destroyLenis()
+        console.info('[Lenis] Disabled — using native scroll')
         return null
     }
 
     if (_lenis) return _lenis
 
+    // 🔍 DEBUG: Test wheel events PŘED Lenis
+    window.addEventListener('wheel', (e) => {
+        console.log('🖱️ Native wheel event detected:', e.deltaY)
+    }, { passive: false, once: true })
+
     _lenis = new Lenis({
         duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        infinite: false,
+        autoResize: true,
         ...options,
     })
 
-    const raf = (time: number) => {
-        _lenis?.raf(time)
-        _rafId = requestAnimationFrame(raf)
-    }
-    _rafId = requestAnimationFrame(raf)
+        ; (window as any).lenis = _lenis
 
+    // RAF loop
+    function raf(time: number) {
+        _lenis?.raf(time)
+        requestAnimationFrame(raf)
+    }
+    requestAnimationFrame(raf)
+
+    // ScrollTrigger integrace
     _lenis.on('scroll', ScrollTrigger.update)
 
-    ScrollTrigger.scrollerProxy(document.documentElement, {
-        scrollTop(value) {
-            if (arguments.length) _lenis?.scrollTo(value as number, { immediate: true })
-            return window.scrollY || window.pageYOffset
-        },
+    // 🔍 DEBUG: Log Lenis scroll events
+    _lenis.on('scroll', ({ scroll, velocity }: any) => {
+        console.log('📜 Lenis scroll:', { scroll, velocity })
     })
 
     ScrollTrigger.refresh()
-    console.info('[Lenis] Enabled (desktop smooth scroll)')
+
+    // 🔍 DEBUG: Test programmatic scroll po 2s
+    setTimeout(() => {
+        console.log('🧪 Testing Lenis.scrollTo(500)...')
+        _lenis?.scrollTo(500)
+    }, 2000)
+
+    console.info('[Lenis] ✅ Enabled (desktop smooth scroll)')
+    console.log('🔍 Lenis instance:', _lenis)
+    console.log('🔍 Lenis isScrolling:', _lenis.isScrolling)
+    console.log('🔍 Document height:', document.documentElement.scrollHeight)
+
     return _lenis
 }
 
-
-
 export function destroyLenis() {
-    if (_rafId) cancelAnimationFrame(_rafId)
-    _rafId = null
-    _lenis?.destroy()
-    _lenis = null
-    ScrollTrigger.getAll().forEach((st) => st.kill())
+    if (_lenis) {
+        _lenis.destroy()
+        _lenis = null
+    }
+
+    ScrollTrigger.getAll().forEach(st => st.kill())
+    ScrollTrigger.refresh()
 }
+
 export function reveal(container: Element | string, opts: RevealOpts = {}) {
     const el = typeof container === "string" ? document.querySelector(container)! : container
     if (!el) return
+
     const { y = 40, duration = 0.8, stagger = 0.12, start = "top 85%" } = opts
     const targets = Array.from(el.children) as HTMLElement[]
 
@@ -106,15 +125,23 @@ export function reveal(container: Element | string, opts: RevealOpts = {}) {
         navigator.maxTouchPoints > 0 ||
         window.matchMedia('(pointer: coarse)').matches
 
-    // 💡 Fix 1: na mobilech vůbec neskrývat text
     if (isTouch) {
-        gsap.set(targets, { opacity: 1, y: 0 })
+        gsap.set(targets, { opacity: 1, y: 20 })
+        gsap.to(targets, {
+            y: 0,
+            duration: duration * 0.6,
+            ease: 'power2.out',
+            stagger: stagger * 0.5,
+            scrollTrigger: {
+                trigger: el,
+                start: start,
+                once: true
+            }
+        })
         return
     }
 
-    // Desktop-only animace
     gsap.set(targets, { opacity: 0, y })
-
     gsap.to(targets, {
         opacity: 1,
         y: 0,
@@ -124,29 +151,38 @@ export function reveal(container: Element | string, opts: RevealOpts = {}) {
         scrollTrigger: {
             trigger: el,
             start,
-            toggleActions: 'play reverse play reverse',
-        },
-        // 💡 Fix 2: po vytvoření vždy refreshni ScrollTrigger
-        onComplete: () => ScrollTrigger.refresh(),
+            toggleActions: 'play none none reverse'
+        }
     })
 }
-
-
 
 export function parallax(target: Element | string, opts: ParallaxOpts = {}) {
     const el = typeof target === 'string' ? document.querySelector(target)! : target
     if (!el) return
+
     const { yPercent = 20, start = 'top bottom', end = 'bottom top', scrub = true } = opts
+
     gsap.fromTo(
         el,
         { yPercent: 0 },
-        { yPercent, ease: 'none', scrollTrigger: { trigger: el, start, end, scrub } }
+        {
+            yPercent,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: el,
+                start,
+                end,
+                scrub,
+                invalidateOnRefresh: true
+            }
+        }
     )
 }
 
 export function pinSection(section: Element | string, opts?: Partial<ScrollTrigger.Vars>) {
     const el = typeof section === 'string' ? document.querySelector(section)! : section
     if (!el) return
+
     ScrollTrigger.create({
         trigger: el,
         start: 'top top',
@@ -157,7 +193,6 @@ export function pinSection(section: Element | string, opts?: Partial<ScrollTrigg
     })
 }
 
-/** Jemný horizontální drift pro více prvků (např. cards) */
 export function driftX(targets: Targets, amount = 30) {
     const nodes = toArray(targets)
     nodes.forEach((node, i) => {
@@ -169,14 +204,13 @@ export function driftX(targets: Targets, amount = 30) {
     })
 }
 
-/** Skew dle rychlosti scrollu (živý „časopisový“ feeling) */
 export function skewOnScroll(targets: Targets, maxSkew = 8) {
     const nodes = toArray(targets)
     let proxy = { skew: 0 }
     const clamp = gsap.utils.clamp(-maxSkew, maxSkew)
 
     nodes.forEach((el) => {
-        const st = ScrollTrigger.create({
+        ScrollTrigger.create({
             trigger: el,
             start: 'top bottom',
             end: 'bottom top',
@@ -194,22 +228,27 @@ export function skewOnScroll(targets: Targets, maxSkew = 8) {
                 }
             },
         })
-        st && ScrollTrigger.refresh()
-        gsap.to(el, { skewY: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 80%' } })
+
+        gsap.to(el, {
+            skewY: 0,
+            duration: 0.6,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 80%' }
+        })
     })
 }
 
-/** Clip-path „záclona“ pro image reveal (nahoru/dolů) */
 export function clipReveal(targets: Targets, direction: 'up' | 'down' = 'up') {
     const nodes = toArray(targets)
     nodes.forEach((el) => {
         gsap.set(el, {
             clipPath: direction === 'up' ? 'inset(100% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)',
         })
+
         ScrollTrigger.create({
             trigger: el,
             start: 'top 85%',
-            once: false,
+            once: true,
             onEnter: () =>
                 gsap.to(el, {
                     clipPath: 'inset(0% 0% 0% 0%)',
@@ -220,7 +259,6 @@ export function clipReveal(targets: Targets, direction: 'up' | 'down' = 'up') {
     })
 }
 
-/** Perspektivní parallax (Z-illusion) – jemný scale + y */
 export function perspectiveParallax(targets: Targets, scaleFrom = 1.05, yTo = 20) {
     const nodes = toArray(targets)
     nodes.forEach((el) => {
@@ -237,15 +275,16 @@ export function perspectiveParallax(targets: Targets, scaleFrom = 1.05, yTo = 20
     })
 }
 
-/** Počítadlo čísla (např. statistiky) synchronizované se vstupem do view */
 export function countUp(target: Element | string, to = 100, duration = 1) {
     const el = typeof target === 'string' ? document.querySelector(target)! : target
     if (!el) return
+
     const obj = { val: 0 }
+
     ScrollTrigger.create({
         trigger: el,
         start: 'top 85%',
-        once: false,
+        once: true,
         onEnter: () => {
             gsap.to(obj, {
                 val: to,
@@ -259,7 +298,6 @@ export function countUp(target: Element | string, to = 100, duration = 1) {
     })
 }
 
-/** Přepínání CSS proměnných (např. barevné téma) podle sekcí */
 export function themeShift(sectionTargets: Targets, cssVar = '--bg-accent', values = ['#0b0b0b', '#151515']) {
     const nodes = toArray(sectionTargets)
     nodes.forEach((section, i) => {
@@ -271,11 +309,12 @@ export function themeShift(sectionTargets: Targets, cssVar = '--bg-accent', valu
     })
 }
 
-/** Marquee, jehož rychlost se odvíjí od scrollu */
 export function marqueeOnScroll(target: Element | string, baseSpeed = 30) {
     const el = typeof target === 'string' ? document.querySelector(target)! : target
     if (!el) return
+
     let last = ScrollTrigger.maxScroll(window)
+
     ScrollTrigger.create({
         start: 0,
         end: last,
@@ -286,13 +325,15 @@ export function marqueeOnScroll(target: Element | string, baseSpeed = 30) {
     })
 }
 
-/** Page progress bar */
 export function pageProgress(barSelector: string) {
     const el = document.querySelector(barSelector) as HTMLElement | null
     if (!el) return
+
     const fill = el.querySelector('span') as HTMLElement | null
     if (!fill) return
+
     gsap.set(fill, { transformOrigin: '0 50%', scaleX: 0 })
+
     ScrollTrigger.create({
         start: 0,
         end: 'max',

@@ -128,27 +128,15 @@
 
     html,
     body {
-        height: 100%;
+        height: auto;
+        min-height: 100%;
         overflow-x: hidden;
-        overflow-y: auto;
-        overscroll-behavior-y: none;
-        -webkit-overflow-scrolling: touch;
-        scroll-behavior: smooth;
-        touch-action: pan-y;
+        overscroll-behavior-y: contain;
+        touch-action: auto;
         backface-visibility: hidden;
     }
 
-    /* zabrání mikro flickeru u fixed overlayů */
-    * {
-        -webkit-tap-highlight-color: transparent;
-        -webkit-touch-callout: none;
-    }
 
-    /* fixed prvky neblokují tap scroll */
-    [data-overlay],
-    [data-scroll-ui] {
-        pointer-events: none;
-    }
 
     body {
         @apply bg-background text-foreground antialiased;
