@@ -29,11 +29,6 @@ const BlogSection = ({ posts }: BlogSectionProps) => {
       ]
     "
             >
-                {/* Jemné světlo z horní části */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,hsl(0_0%_100%/0.3)_0%,transparent_70%)] pointer-events-none" />
-
-                {/* Dekorativní rámeček / stín */}
-                <div className="absolute inset-0 border-t border-[hsl(25_15%_75%/0.4)] shadow-[inset_0_8px_16px_hsl(25_15%_60%/0.08)] pointer-events-none" />
 
                 {/* Obsah */}
                 <div className="relative container-default max-w-lg mx-auto px-6">

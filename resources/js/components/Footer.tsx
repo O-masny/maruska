@@ -94,7 +94,7 @@ const Footer = () => {
                         <div className="space-y-4 text-muted-foreground">
                             <div className="flex items-start gap-3">
                                 <MapPin className="h-5 w-5 text-primary mt-0.5" />
-                                <span>Vodní, 760 01 Zlín 1</span>
+                                <span>Vodní 4200, 760 01 Zlín 1</span>
                             </div>
 
                             <div className="flex items-center gap-3">

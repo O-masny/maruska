@@ -111,7 +111,7 @@ const ContactSection = () => {
                                 title: 'Adresa',
                                 content: (
                                     <>
-                                        Vodní 23<br />
+                                        Vodní 4200<br />
                                         760 01 Zlín 1<br />
                                         Česká republika
                                     </>

@@ -5,7 +5,7 @@ const contactInfo = [
     {
         icon: MapPin,
         title: "Adresa",
-        details: ["Vodní", "760 01 Zlín 1", "Česká republika"],
+        details: ["Vodní 4200", "760 01 Zlín 1", "Česká republika"],
     },
     {
         icon: Phone,
