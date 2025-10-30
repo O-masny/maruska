@@ -8,11 +8,6 @@ import { useEffect, useRef, useState } from 'react'
 
 const HeroSection = () => {
     const ref = useRef<HTMLDivElement>(null)
-    const { scrollYProgress } = useScroll({
-        target: ref,
-        offset: ['start start', 'end start'],
-    })
-
     const [isMobile, setIsMobile] = useState(false)
 
     useEffect(() => {
@@ -22,8 +17,12 @@ const HeroSection = () => {
         return () => window.removeEventListener('resize', check)
     }, [])
 
-    // 💫 parallax jen na desktopu
-    const y = useTransform(scrollYProgress, [0, 1], isMobile ? ['0%', '0%'] : ['0%', '25%'])
+    // --- Desktop only parallax ---
+    const { scrollYProgress } = useScroll({
+        target: !isMobile ? ref : undefined,
+        offset: ['start start', 'end start'],
+    })
+    const y = useTransform(scrollYProgress, [0, 1], ['0%', '25%'])
 
     const scrollTo = (id: string) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
@@ -38,20 +37,27 @@ const HeroSection = () => {
       "
         >
             {/* Background */}
-            <motion.div
-                style={{ y, backgroundImage: `url(${cafeInterior})` }}
-                className="
-          absolute inset-0 bg-cover bg-center 
-          will-change-transform pointer-events-none
-        "
-            >
-                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
-                <div className="absolute inset-0 pointer-events-none before:content-[''] before:absolute before:inset-0 
-          before:bg-black/30 before:backdrop-blur-sm 
-          before:[mask-image:radial-gradient(circle_at_center,rgba(0,0,0,1)_40%,transparent_100%)] 
-          before:[-webkit-mask-image:radial-gradient(circle_at_center,rgba(0,0,0,1)_40%,transparent_100%)]"
-                />
-            </motion.div>
+            {isMobile ? (
+                <div
+                    className="
+            absolute inset-0 bg-cover bg-center
+            pointer-events-none
+            "
+                    style={{ backgroundImage: `url(${cafeInterior})` }}
+                >
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+                </div>
+            ) : (
+                <motion.div
+                    style={{ y, backgroundImage: `url(${cafeInterior})` }}
+                    className="
+            absolute inset-0 bg-cover bg-center 
+            will-change-transform pointer-events-none
+          "
+                >
+                    <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70" />
+                </motion.div>
+            )}
 
             {/* Content */}
             <motion.div
@@ -91,20 +97,22 @@ const HeroSection = () => {
             </motion.div>
 
             {/* Logo blur */}
-            <motion.img
-                src="/favicon.svg"
-                alt="blurred logo"
-                style={{ y }}
-                animate={{ opacity: [0.25, 0.4, 0.25] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="
-          absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%]
-          w-[70vw] max-w-[600px]
-          opacity-30 blur-xl
-          drop-shadow-[0_0_40px_rgba(255,255,255,0.25)]
-          pointer-events-none select-none
-        "
-            />
+            {!isMobile && (
+                <motion.img
+                    src="/favicon.svg"
+                    alt="blurred logo"
+                    style={{ y }}
+                    animate={{ opacity: [0.25, 0.4, 0.25] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                    className="
+            absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%]
+            w-[70vw] max-w-[600px]
+            opacity-30 blur-xl
+            drop-shadow-[0_0_40px_rgba(255,255,255,0.25)]
+            pointer-events-none select-none
+          "
+                />
+            )}
 
             {/* Scroll indicator */}
             <motion.div

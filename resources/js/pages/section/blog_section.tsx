@@ -19,19 +19,48 @@ interface BlogSectionProps {
 const BlogSection = ({ posts }: BlogSectionProps) => {
     if (!posts?.length)
         return (
-            <section className="py-28 bg-[hsl(30_25%_90%)] text-center">
-                <h2 className="text-section-title mb-4 text-foreground">Blog</h2>
-                <p className="text-muted-foreground mb-6">
-                    Zatím žádné články – sledujte nás, brzy přidáme čerstvou dávku inspirace ☕
-                </p>
-                <Link href="/blog">
-                    <CoffeeButton size="md" variant="solid">
-                        Navštívit blog
-                    </CoffeeButton>
-                </Link>
+            <section
+                className="
+      relative py-32 text-center overflow-hidden
+      bg-[linear-gradient(180deg,
+        hsl(30_25%_92%) 0%,
+        hsl(28_20%_88%) 40%,
+        hsl(26_15%_82%) 100%)
+      ]
+    "
+            >
+                {/* Jemné světlo z horní části */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,hsl(0_0%_100%/0.3)_0%,transparent_70%)] pointer-events-none" />
+
+                {/* Dekorativní rámeček / stín */}
+                <div className="absolute inset-0 border-t border-[hsl(25_15%_75%/0.4)] shadow-[inset_0_8px_16px_hsl(25_15%_60%/0.08)] pointer-events-none" />
+
+                {/* Obsah */}
+                <div className="relative container-default max-w-lg mx-auto px-6">
+                    <h2 className="text-section-title mb-4 text-[hsl(25_20%_25%)] font-serif">
+                        Blog
+                    </h2>
+
+                    <p className="text-base sm:text-lg text-[hsl(25_15%_30%)] mb-8 leading-relaxed">
+                        Zatím žádné články – sledujte nás, brzy přidáme čerstvou dávku inspirace ☕
+                    </p>
+
+                    <Link href="/blog">
+                        <CoffeeButton
+                            size="lg"
+                            variant="solid"
+                            className="
+            bg-gradient-to-r from-[hsl(10_60%_45%)] to-[hsl(10_55%_35%)]
+            text-white shadow-md hover:shadow-lg hover:scale-[1.03]
+            transition-all duration-300
+          "
+                        >
+                            Navštívit blog
+                        </CoffeeButton>
+                    </Link>
+                </div>
             </section>
         )
-
     const post = posts[0]
 
     return (

@@ -13,14 +13,19 @@ const AboutSection = () => {
 
     useEffect(() => {
         if (textRef.current) reveal(textRef.current, { y: 28, stagger: 0.1 })
-        if (imgWrapRef.current) parallax(imgWrapRef.current, { yPercent: 18, scrub: 0.5 })
+
+        // 🔥 Parallax aplikuje jen na IMG, ne na wrapper
+        if (imgWrapRef.current) {
+            const img = imgWrapRef.current.querySelector('img')
+            if (img) parallax(img, { yPercent: 18, scrub: 0.5 })
+        }
     }, [])
 
     return (
         <section
             id="about"
             className="
-        relative overflow-hidden py-32
+        relative overflow-hidden py-28 sm:py-32
         bg-[linear-gradient(180deg,
           hsl(30_25%_90%) 0%,
           hsl(28_20%_85%) 50%,
@@ -32,16 +37,23 @@ const AboutSection = () => {
             <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_10%,hsl(0_0%_100%/0.18),transparent_60%)]" />
 
             <div className="container-default">
-                <div className="grid lg:grid-cols-2 gap-y-16 lg:gap-x-20 xl:gap-x-28 items-center">
-
-                    {/* TEXT */}
+                <div
+                    className="
+            grid
+            lg:grid-cols-2
+            gap-y-16 lg:gap-x-20 xl:gap-x-28
+            items-center
+            text-center lg:text-left
+          "
+                >
+                    {/* --- TEXT --- */}
                     <motion.div
                         ref={textRef}
                         initial={{ opacity: 0, x: -40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
-                        className="space-y-8"
+                        className="space-y-8 max-w-2xl mx-auto lg:mx-0"
                     >
                         <h2 className="text-section-title mb-4 font-serif text-foreground">
                             O nás
@@ -72,7 +84,7 @@ const AboutSection = () => {
                                 <Button
                                     size="lg"
                                     className="
-                    rounded-full px-10 py-5 
+                    rounded-full px-10 py-5
                     bg-gradient-to-r from-[hsl(10_60%_45%)] to-[hsl(10_55%_35%)]
                     text-white shadow-md hover:shadow-lg hover:scale-[1.02]
                     transition-all duration-300
@@ -84,23 +96,42 @@ const AboutSection = () => {
                         </motion.div>
                     </motion.div>
 
-                    {/* IMAGE */}
+                    {/* --- IMAGE --- */}
                     <motion.div
                         ref={imgWrapRef}
                         initial={{ opacity: 0, x: 40 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ duration: 1 }}
                         viewport={{ once: true }}
-                        className="relative w-full max-w-[600px] mx-auto overflow-hidden sm:rounded-2xl"
+                        className="
+              relative
+              w-full
+              max-w-[600px]
+              mx-auto
+              overflow-hidden
+              sm:rounded-2xl
+              transform-gpu
+              will-change-transform
+              origin-center
+            "
                     >
                         <img
                             src={coffeeMaking}
                             alt="Příprava kávy u Marušky"
-                            className="w-full h-80 sm:h-96 md:h-[480px] object-cover rounded-2xl shadow-2xl"
+                            className="
+                w-full
+                h-64 sm:h-80 md:h-[480px]
+                object-cover object-center
+                rounded-2xl
+                shadow-2xl
+                will-change-transform
+                transform-gpu
+                origin-center
+              "
                         />
 
                         {/* Espresso overlay */}
-                        <div className="absolute inset-0 bg-[linear-gradient(180deg,hsl(20_15%_10%/0.25)_0%,hsl(20_15%_5%/0.9)_100%)] rounded-2xl pointer-events-none" />
+                        <div className="absolute inset-0 pointer-events-none" />
 
                         {/* Caption */}
                         <motion.div
@@ -109,10 +140,12 @@ const AboutSection = () => {
                             transition={{ delay: 0.4, duration: 1 }}
                             viewport={{ once: true }}
                             className="
-                absolute bottom-5 left-5 sm:bottom-6 sm:left-6
+                absolute bottom-5 left-1/2 -translate-x-1/2
+                sm:bottom-6 sm:left-6 sm:translate-x-0
                 bg-background/70 backdrop-blur-sm shadow-inner
                 px-4 sm:px-5 py-2 sm:py-3 rounded-full
                 text-xs sm:text-sm text-muted-foreground border border-border
+                text-center
               "
                         >
                             Vychutnejte si kávu a dezerty v příjemné atmosféře naší kavárny
