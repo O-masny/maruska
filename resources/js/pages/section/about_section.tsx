@@ -90,8 +90,7 @@ const AboutSection = () => {
                         </p>
 
                         <p className="text-base sm:text-lg italic text-muted-foreground/90">
-                            Vychutnejte si chuť pravé
-                        </p>
+                            Vychutnejte si chuť pravého Italského espressa Café Vergnano 1882.                        </p>
 
                         <motion.div
                             whileHover={{ scale: 1.05 }}
