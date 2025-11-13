@@ -19,13 +19,23 @@ const AboutSection = () => {
         if (textEl) {
             textEl.style.opacity = '1'
             textEl.style.transform = 'none'
+            
+            // Zajistit viditelnost všech dětských elementů
+            const children = Array.from(textEl.children) as HTMLElement[]
+            children.forEach(child => {
+                child.style.opacity = '1'
+                child.style.transform = 'none'
+            })
         }
 
-        // Reveal animace (GSAP)
-        try {
-            if (textEl) reveal(textEl, { y: 28, stagger: 0.1 })
-        } catch (e) {
-            console.warn('Reveal animation skipped:', e)
+        // Reveal animace pouze na desktopu (širší než 1024px)
+        const isDesktop = window.innerWidth >= 1024
+        if (isDesktop) {
+            try {
+                if (textEl) reveal(textEl, { y: 28, stagger: 0.1 })
+            } catch (e) {
+                console.warn('Reveal animation skipped:', e)
+            }
         }
 
         // Parallax – pouze desktop

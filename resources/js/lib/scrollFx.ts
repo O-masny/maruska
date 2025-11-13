@@ -126,18 +126,8 @@ export function reveal(container: Element | string, opts: RevealOpts = {}) {
         window.matchMedia('(pointer: coarse)').matches
 
     if (isTouch) {
-        gsap.set(targets, { opacity: 1, y: 20 })
-        gsap.to(targets, {
-            y: 0,
-            duration: duration * 0.6,
-            ease: 'power2.out',
-            stagger: stagger * 0.5,
-            scrollTrigger: {
-                trigger: el,
-                start: start,
-                once: true
-            }
-        })
+        // Pro touch zařízení: žádná animace, text je viditelný od začátku
+        gsap.set(targets, { opacity: 1, y: 0 })
         return
     }
 
